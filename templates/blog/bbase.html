@@ -10,7 +10,7 @@
                 <h3>MyBlog</h3>
                 {% if user.is_staff %}
                 <a href="">Admin</a>
-                <a href="">Add post</a>
+                <a href="{% url 'newPost' %}">Add post</a>
                 {% endif %}
 
             {% endblock %}

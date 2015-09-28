@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from main import regbackend
 
 urlpatterns = [
     url(r'^$', include('main.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/register/$', regbackend.MyRegistrationView.as_view(), name='registration_register'),
+    url(r'^accounts/register/group/', regbackend.GroupMemberRegView.as_view(), name='member_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^accounts/profile/$', include('main.urls')),
+    url(r'^accounts/profile/', include('main.urls')),
     url(r'^blog/', include('blog.urls')),
 ]

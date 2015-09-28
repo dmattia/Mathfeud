@@ -1,4 +1,7 @@
 from django.conf.urls import patterns, url
 from main import views
 
-urlpatterns = patterns('', url(r'^$', views.index, name='index'))
+urlpatterns = [ url(r'^$', views.index, name='index'),
+	url(r'userProfile', views.profile, name='user_profile')
+]
+
