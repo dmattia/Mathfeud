@@ -17,6 +17,8 @@
         (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 
         <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
 	<a href="{% url 'blogList' %}">Blog</a>
+	<a href="{% url 'user_profile' %}"> Profile  </a>
+
     {% else %}
        <a href="{% url 'auth_login' %}">{% trans "Log in" %}</a>
     {% endif %}
