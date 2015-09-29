@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
+from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from main.forms import InviteForm
+from .models import Video
 
 # Create your views here.
 def index(request):
@@ -18,3 +20,21 @@ def profile(request):
     else:
         form = InviteForm()
     return render(request, 'main/profile.html', {'form':form})
+
+def getVideos(request):
+	return render_to_response('main/videos.html', {'videos': Video.objects.all()})
+
+def getVideo(request, vidNumber):
+	#if(request.POST):
+	#	like(request, vidNumber)	
+	return render_to_response('main/video.html', {'video': Video.objects.get(id=vidNumber)})
+
+def like(request, vidNumber):
+	new_like, created = Like.objects.get_or_create(user=request.user, video=vidNumber)
+	#if not created:
+		# The user has liked this picture before
+	#else:
+		# User has not liked this picture before
+        context_dic = {'form':PostForm(), 'user':request.user}
+        context_dic.update(csrf(request))
+        return HttpResponseRedirect(reverse("getVideo", args=[vidNumber]))

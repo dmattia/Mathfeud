@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% csrf_token %}
+{% load staticfiles %}
+
+{% block content %}
+
+{% for video in videos %}
+	<hr>
+	<h2><a href="{{ video.id }}">{{ video.name }}</a></h2>
+	<div class="videoWrapper">
+		<iframe width="560" height="349" src="{{ video.getEmbedUrl }}" frameborder="0" allowfullscreen></iframe>
+	</div>
+{% endfor %}
+
+{% endblock %}
