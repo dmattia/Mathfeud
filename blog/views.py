@@ -82,8 +82,3 @@ def NewPost(request):
     context_dic = {'form':PostForm(), 'user':request.user}
     context_dic.update(csrf(request))
     return render(request, "blog/newpost.html", context_dic)
-
-def get_date(request):
-	now = datetime.datetime.now()
-	html = "<html><body>It is now %s</body></html>" % now
-	return html
