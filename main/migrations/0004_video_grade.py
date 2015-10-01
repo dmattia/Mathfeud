@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('main', '0004_video'),
+        ('main', '0003_like'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='video',
-            name='name',
-            field=models.CharField(default='random math video', max_length=255),
+            name='grade',
+            field=models.IntegerField(default=8),
             preserve_default=False,
         ),
     ]

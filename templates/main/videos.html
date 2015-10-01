@@ -6,7 +6,7 @@
 
 {% for video in videos %}
 	<hr>
-	<h2><a href="{{ video.id }}">{{ video.name }}</a></h2>
+	<h2><a href="{{ video.id }}">{{ video.name }}</a>       Grade: {{ video.grade }}</h2>
 	<div class="videoWrapper">
 		<iframe width="560" height="349" src="{{ video.getEmbedUrl }}" frameborder="0" allowfullscreen></iframe>
 	</div>

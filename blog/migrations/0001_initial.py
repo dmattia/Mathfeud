@@ -11,6 +11,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Comment',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('author', models.CharField(max_length=60)),
+                ('body', models.TextField()),
+            ],
+        ),
+        migrations.CreateModel(
             name='Post',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -18,5 +27,10 @@ class Migration(migrations.Migration):
                 ('body', models.TextField()),
                 ('created', models.DateTimeField(auto_now_add=True)),
             ],
+        ),
+        migrations.AddField(
+            model_name='comment',
+            name='post',
+            field=models.ForeignKey(to='blog.Post'),
         ),
     ]

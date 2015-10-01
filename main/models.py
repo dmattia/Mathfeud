@@ -23,22 +23,13 @@ class UserProfile(models.Model):
 class Video(models.Model):
 	url = models.CharField(max_length=255)
 	name = models.CharField(max_length=255)
+	grade = models.IntegerField()
 	def __unicode__(self):
 		return self.name
 	@property
 	def getEmbedUrl(self):
-		return self.url.replace("watch?v=","embed/",1)
-	@property
-	def likes(self):
-		video = Video.objects.get(id=self.id)
-		return video.like_set.all().count()
-
-class Like(models.Model):
-	user = models.ForeignKey(UserProfile)
-	video = models.ForeignKey(Video)
-	created = models.DateTimeField(auto_now_add=True)
+		return self.url.replace("watch?v=","embed/",1) + "?modestbranding=1"
 
 admin.site.register(GroupProfile)
 admin.site.register(UserProfile)
 admin.site.register(Video)
-admin.site.register(Like)

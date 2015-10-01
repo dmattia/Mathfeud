@@ -8,10 +8,5 @@
 <div class="videoWrapper">
 	<iframe width="560" height="349" src="{{ video.getEmbedUrl }}" frameborder="0" allowfullscreen></iframe>
 </div>
-<p>Likes: {{ video.likes }}</p>
-<form action="{% url "like_video" video.id %}" method="POST">
-	{% csrf_token %}
-	<input type="submit" value="click" name="likeBtn">
-</form>
 
 {% endblock %}

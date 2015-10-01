@@ -5,6 +5,5 @@ urlpatterns = [ url(r'^$', views.index, name='index'),
 	url(r'userProfile', views.profile, name='user_profile'),
 	url(r'^videos/$', views.getVideos, name='videos'),
 	url(r'^videos/(\d+)/$', views.getVideo, name='video'),
-	url(r'^videos/like_video/(\d+)/$', views.like, name='like_video'),
 ]
 
