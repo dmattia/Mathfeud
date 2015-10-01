@@ -22,19 +22,7 @@ def profile(request):
     return render(request, 'main/profile.html', {'form':form})
 
 def getVideos(request):
-	return render_to_response('main/videos.html', {'videos': Video.objects.all()})
+	return render_to_response('main/videos.html', {'videos': Video.objects.order_by('grade')})
 
 def getVideo(request, vidNumber):
-	#if(request.POST):
-	#	like(request, vidNumber)	
 	return render_to_response('main/video.html', {'video': Video.objects.get(id=vidNumber)})
-
-def like(request, vidNumber):
-	new_like, created = Like.objects.get_or_create(user=request.user, video=vidNumber)
-	#if not created:
-		# The user has liked this picture before
-	#else:
-		# User has not liked this picture before
-        context_dic = {'form':PostForm(), 'user':request.user}
-        context_dic.update(csrf(request))
-        return HttpResponseRedirect(reverse("getVideo", args=[vidNumber]))
