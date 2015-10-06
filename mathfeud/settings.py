@@ -123,3 +123,5 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "mathfeud@psychstat.org"
 EMAIL_HOST_PASSWORD = "Tj9F>6W7"
+
+AUTH_PROFILE_MODULE = 'main.UserProfile'
