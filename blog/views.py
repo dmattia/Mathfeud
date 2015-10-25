@@ -12,7 +12,7 @@ from blog.models import *
 def main(request):
     """ Main listing"""
     posts = Post.objects.all().order_by("-created")
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 10)
 
     try: page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
@@ -21,12 +21,13 @@ def main(request):
         posts = paginator.page(page)
     except (InvalidPage, EmptyPage):
         posts = paginator.page(paginator.num_pages)
-    
+    for post in posts:
+	if (len(post.body) > 500):
+		post.body = post.body[:500] + "..."
     context_dict = {'posts':posts, 'user':request.user}
     return render(request, 'blog/list.html', context_dict)
 
 def post(request, pk):
-    """ Single post with comments and a comment form """
     post = Post.objects.get(pk=int(pk))
     d = {'post':post, 'user':request.user}
     return render(request, 'blog/post.html', d)
@@ -42,8 +43,9 @@ def add_comment(request, pk):
 
     if p.has_key("body") and p["body"]:
         author = "Anonymous"
-        if p["author"]: author = p["author"]
-
+        #if p["author"]: author = p["author"]
+	if request.user.is_authenticated():
+		author = request.user.username
         comment = Comment(post=Post.objects.get(pk=pk))
         cf = CommentForm(p, instance=comment)
         cf.fields["author"].required = False
@@ -72,8 +74,13 @@ def add_post(request):
 
     if p.has_key("body") and p["body"]:
         post = Post(title=p["title"], body=p["body"])
+	author = "anonymous"
+	if (request.user.is_authenticated()):
+		author = request.user.username
         cf = PostForm(p, instance=post)
+        cf.fields["author"].required = False
         post = cf.save(commit=False)
+	post.author = author
         post.save()
     return HttpResponseRedirect(reverse("blogList"))
 

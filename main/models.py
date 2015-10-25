@@ -19,7 +19,7 @@ class UserProfile(models.Model):
 	group = models.ForeignKey(GroupProfile)
 	def __unicode__(self):
 		return self.user.username
-
+"""
 class Video(models.Model):
 	url = models.CharField(max_length=255)
 	name = models.CharField(max_length=255)
@@ -29,7 +29,7 @@ class Video(models.Model):
 	@property
 	def getEmbedUrl(self):
 		return self.url.replace("watch?v=","embed/",1) + "?modestbranding=1"
-
+"""
 admin.site.register(GroupProfile)
 admin.site.register(UserProfile)
-admin.site.register(Video)
+#admin.site.register(Video)
