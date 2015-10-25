@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+   'materialdjango',
+    'easy_pjax',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sites',
@@ -41,6 +43,7 @@ INSTALLED_APPS = (
     'main',
     'blog',
     'registration',
+    'video',
 )
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
@@ -54,6 +57,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'material.frontend.middleware.SmoothNavigationMiddleware',
 )
 
 ROOT_URLCONF = 'mathfeud.urls'
@@ -71,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'material.frontend.context_processors.modules',
             ],
         },
     },
@@ -125,3 +130,7 @@ EMAIL_HOST_USER = "mathfeud@psychstat.org"
 EMAIL_HOST_PASSWORD = "Tj9F>6W7"
 
 AUTH_PROFILE_MODULE = 'main.UserProfile'
+
+MODULES = (
+    #'mathfeud.blog.modules.main'
+)

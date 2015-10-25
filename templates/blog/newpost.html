@@ -1,14 +1,13 @@
 {% extends "blog/bbase.html" %}
 {% block content_blog %}
     <a href="{% url "blogList" %}">Back To Posts</a>
-    <div id="addc">Add a Post</div>
 <!-- Comment form  -->
 <form action="{% url "add_post"  %}" method="POST">{% csrf_token %}
     <div id="cform">
         Title: {{ form.title }}
         <p>{{ form.body }}</p>
     </div>
-    <div id="submit"><input type="submit" value="Submit"></div>
+    <div id="submit"><input class="mdl-button mdl-button--raised" type="submit" value="Submit"></div>
 </form>
 
 {% endblock %}
