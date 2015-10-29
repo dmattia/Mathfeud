@@ -23,6 +23,11 @@
 		font-size: 14px;
 		color: #848484;
 		font: Futura Lt BT, Arial, sans-serif;
+		display: inline;
+	}
+	#blog-comments {
+		display: inline;
+		float: right;
 	}
 {% endblock %}
 {% block content_blog %}
@@ -39,6 +44,7 @@
                     <div id="blog-body">{{ post.body }}</div>
                     <div id="blog-time">Posted at {{ post.created }}</div>
 		    <div id="blog-author">by {{ post.author }}</div>
+		    <div id="blog-comments">Comments: {{ post.commentCount }}</div> 
                 </ul>
 		</div>
 		</a>
