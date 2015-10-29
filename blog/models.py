@@ -9,6 +9,9 @@ class Post(models.Model):
     author = models.CharField(max_length=60)
     created = models.DateTimeField(auto_now_add=True)
 
+    def commentCount(self):
+        return Comment.objects.filter(post=self).count()
+
     def __unicode__(self):
         return self.title
 ### Admin
