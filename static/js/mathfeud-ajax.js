@@ -42,7 +42,7 @@ $(document).ready(function() {
 			},
 			
 			error : function(xhr, errmsg, err) {
-				alert("Invalid invite!");
+				alert(errmsg);
 				console.log(xhr.status + ":" + xhr.responseText);
 			}
 		});
