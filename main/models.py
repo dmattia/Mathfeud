@@ -20,16 +20,13 @@ class UserProfile(models.Model):
 	def __unicode__(self):
 		return self.user.username
 
-class Video(models.Model):
-	url = models.CharField(max_length=255)
-	name = models.CharField(max_length=255)
-	grade = models.IntegerField()
+class PendingInvite(models.Model):
+	group = models.ForeignKey(GroupProfile)
+	email = models.CharField(max_length=50)
+	activation_key = models.CharField(max_length=40)
 	def __unicode__(self):
-		return self.name
-	@property
-	def getEmbedUrl(self):
-		return self.url.replace("watch?v=","embed/",1) + "?modestbranding=1"
+		return "Pending invite for %s" % email
 
 admin.site.register(GroupProfile)
 admin.site.register(UserProfile)
-admin.site.register(Video)
+admin.site.register(PendingInvite)

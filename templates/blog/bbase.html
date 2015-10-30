@@ -1,21 +1,17 @@
 {% extends "base.html" %}
 
+{% block css %}
+
+{% endblock %}
+
+{% block tool_title %} 
+ 	<a href="{% url 'newPost' %}">
+	<button class="mdl-button mdl-button--raised mdl-button--accent">New Post</button>
+ 	</a>
+{% endblock %}
+
 {% block content %}
-    <div id="sidebar"> {% block sidebar %} {% endblock %} </div>
     <div id="container">
-        <div id="menu">
-            {% block nav-global %}
-
-                <!-- MENU -->
-                <h3>MyBlog</h3>
-                {% if user.is_staff %}
-                <a href="">Admin</a>
-                <a href="{% url 'newPost' %}">Add post</a>
-                {% endif %}
-
-            {% endblock %}
-        </div>
-
         <div id="content">
             {% block content_blog %}{% endblock %}
         </div>

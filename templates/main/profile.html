@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 {% csrf_token %}
-{% load staticfiles %}
 
-{% block content %}<h1>My Profile</h1>
-	<form id="invite_form" method="post", action="">
-	{% csrf_token %}
-
-	{% for field in form.visible_fields %}
-		{{ field.errors }}
-		{{ field.help_text }}
-		{{ field }}
-	{% endfor %}
-		<input type="submit" name="submit" value="Invite" />
-	</form>
+{% block content %}
+	<table name="group_profile">
+		<tr><td>Group Name:</td> <td>{{ group.name }}</td></tr>
+		<tr><td>School:</td> <td>{{ group.school }}</td></tr>
+	</table>
+	
+	{% if is_admin %}
+	<table name="group_member">
+		{% for member in group_members %}
+		<tr><td>Name:</td> <td>{{ member.user.username }}</td></tr>
+		{% endfor %}
+	</table>
+	<input type="email" id="invite_email" name="invite_email"/>
+	<button name="send_invite" id="send_invite" type="button">Send Invite</button>
+	{% endif %}
 {% endblock %}
