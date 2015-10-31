@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 class UserProfileRegistrationForm(RegistrationFormUniqueEmail):
 	school = forms.CharField()
 	group_name = forms.CharField()
+	picture = forms.ImageField()
 
 class InviteForm(forms.Form):
 	invite_email = forms.EmailField(max_length=128, help_text="sending invitation to the email address")

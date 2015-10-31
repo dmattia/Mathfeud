@@ -6,14 +6,26 @@
 		<tr><td>Group Name:</td> <td>{{ group.name }}</td></tr>
 		<tr><td>School:</td> <td>{{ group.school }}</td></tr>
 	</table>
+	{% if user_profile.picture %}
+		<img src="{{ user_profile.picture_path }}" alt="profile picture">
+	{% else %}
+		User has no picture
+	{% endif %}
 	
 	{% if is_admin %}
-	<table name="group_member">
-		{% for member in group_members %}
-		<tr><td>Name:</td> <td>{{ member.user.username }}</td></tr>
-		{% endfor %}
-	</table>
-	<input type="email" id="invite_email" name="invite_email"/>
-	<button name="send_invite" id="send_invite" type="button">Send Invite</button>
+	    	<h>Group Members</h>
+	    	<table name="group_member">
+	    		{% for member in group_members %}
+	    		<tr><td>Name:</td> <td>{{ member.user.username }}</td></tr>
+	    		{% endfor %}
+	    	</table>
+	    	<h>Pending Invites</h>
+	    	<table name="pending_invite">
+	    		{% for invite in pending_invite %}
+	    		<tr><td>Email:</td> <td>{{ invite.email }}</td></tr>
+	    		{% endfor %}
+	    	</table>
+	    	<input type="email" id="invite_email" name="invite_email"/>
+	    	<button name="send_invite" id="send_invite" type="button">Send Invite</button>
 	{% endif %}
 {% endblock %}

@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from main import regbackend
 from material.frontend import urls as frontend_urls
+from mathfeud import settings
 
 urlpatterns = [
     url(r'^$', include('main.urls')),
@@ -28,4 +29,7 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls')),
     url(r'^videos/', include('video.urls')),
     url(r'', include(frontend_urls)),
+    url(r'^images/(.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
 ]

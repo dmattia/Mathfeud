@@ -22,6 +22,9 @@ $(document).ready(function() {
        		  }
     	 } 
 	});
+	
+	var pending_invite_div = $('#pending_invite');
+	var i = $('#pending_invite tr').size() + 1;
 
 	$('#send_invite').click(function(){
 		console.log("send invite is working!")
@@ -36,6 +39,9 @@ $(document).ready(function() {
 					$('#invite_email').val(''); // remove the text
 					console.log(json);
 					console.log("success");
+					// add pending invite
+					pending_invite_div.append('<tr>td>Email:</td> <td>'+invite_email+'</td></tr>');
+					i++;
 				} else {
 					alert("Email send failed!");
 				}
