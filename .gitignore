@@ -1,7 +1,8 @@
-*.swp
+*.sw[po]
 *migration*
 *pyc*
 *images*
+*settings.py*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

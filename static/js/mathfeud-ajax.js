@@ -23,26 +23,27 @@ $(document).ready(function() {
     	 } 
 	});
 	
-	var pending_invite_div = $('#pending_invite');
-	var i = $('#pending_invite tr').size() + 1;
+	var pending_invite_div = $('#invite_table');
+	var i = $('#invite_table tr').size() + 1;
 
 	$('#send_invite').click(function(){
-		console.log("send invite is working!")
-		console.log($('#invite_email').val())
+		console.log("send invite is working!");
+		console.log($('#invite_email').val());
+		//pending_invite__div.append("hello");
 		$.ajax({
 			url : "send_invite/",
 			type : "POST",
 			data : {invite_email : $('#invite_email').val() },
-
 			success : function(json) {
 				if (json['status'] == '1') {
-					$('#invite_email').val(''); // remove the text
+					// add pending invite
+					pending_invite_div.append('<tr><td>'+$('#invite_email').val()+'</td></tr>');
+					i++;
+					// remove text
+					$('#invite_email').val('');
 					console.log(json);
 					console.log("success");
-					// add pending invite
-					pending_invite_div.append('<tr>td>Email:</td> <td>'+invite_email+'</td></tr>');
-					i++;
-				} else {
+								} else {
 					alert("Email send failed!");
 				}
 			},
