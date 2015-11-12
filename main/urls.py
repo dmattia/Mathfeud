@@ -1,10 +1,9 @@
 from django.conf.urls import patterns, url
 from main import views
-
-urlpatterns = [ url(r'^$', views.index, name='index'),
+from video import views as video_views
+urlpatterns = [ 
+	url(r'^$', video_views.topicList, name='index'),
 	url(r'userProfile', views.profile, name='user_profile'),
-	#url(r'^videos/$', views.getVideos, name='videos'),
-	#url(r'^videos/(\d+)/$', views.getVideo, name='video'),
 	url(r'^send_invite/$', views.send_invite, name='send_invte'),
 ]
 

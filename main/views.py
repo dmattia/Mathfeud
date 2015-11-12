@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
-from main.forms import GroupProfileForm, GroupReadOnlyForm
+from main.forms import GroupProfileForm, GroupReadOnlyForm, UpdateProfilePictureForm
 from .models import UserProfile, GroupProfile, PendingInvite
 import json
 from django.utils.crypto import get_random_string
@@ -16,11 +16,23 @@ def index(request):
     return render(request, 'main/index.html', {})
 
 def profile(request):
-    context_dict = {}
     user_profile = UserProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        p = request.POST
+        form = UpdateProfilePictureForm(p, request.FILES)
+        if form.is_valid():
+            newPic = form.cleaned_data['newPic']
+            user_profile.picture = newPic            
+            user_profile.save()
+    else:
+        form = UpdateProfilePictureForm()
+
+    context_dict = {}
     context_dict['user'] = request.user
     context_dict['user_profile'] = user_profile
     context_dict['group'] = user_profile.group
+    context_dict['form'] = form
     context_dict['is_admin'] = request.user.groups.filter(name='groupAdmin').exists()
     if (context_dict['is_admin']):
         context_dict['group_members'] = UserProfile.objects.filter(group=user_profile.group)

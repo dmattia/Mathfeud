@@ -25,3 +25,6 @@ class GroupReadOnlyForm(GroupProfileForm):
 		super(GroupReadOnlyForm, self).__init__(*args, **kwargs)
 		for field in self.fields.values():
 			field.widget.attrs['disabled'] = 'true'
+
+class UpdateProfilePictureForm(forms.Form):
+	newPic = forms.ImageField()
