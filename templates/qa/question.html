@@ -22,14 +22,14 @@
 	}
 {% endblock %}
 {% block content_blog %}
-    <a href="{% url "blogList" %}">Back To Posts</a>
+    <a href="{% url "questionList" %}">Back To Posts</a>
     <!-- Post  -->
-    <div class="title">{{ post.title }}</div>
+    <div class="title">{{ question.title }}</div>
     <ul>
    <paper-material elevation="1">
-	<div class="time">{{ post.author }}</div>
-   	<div class="body" id="blog_body">{{ post.body | safe }}</div>
-	<div class="time">{{ post.created }}</div>
+	<div class="time">{{ question.author.user.username }}</div>
+   	<div class="body" id="blog_body">{{ question.body | safe }}</div>
+	<div class="time">{{ question.created }}</div>
    </paper-item>
    </ul>
     <!-- Comments  -->

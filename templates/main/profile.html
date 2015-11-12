@@ -1,30 +1,85 @@
 {% extends 'base.html' %}
 {% csrf_token %}
 
+{% block css %}
+.profile_table {
+	margin-top: 10px;
+}
+h {
+	font: 'Gotham Book', Gotham-Book, Arial, sans-serif;
+}
+{% endblock %}
+
 {% block content %}
-	<table name="group_profile">
-		<tr><td>Group Name:</td> <td>{{ group.name }}</td></tr>
-		<tr><td>School:</td> <td>{{ group.school }}</td></tr>
-	</table>
+	<div class="profile_table">
+	<table class="mdl-data-table mdl-js-data-table mdl-table-selectable mdl-shadow--2dp full-width" name="group_profile">
+		<thead>
+		<tr>
+		<th class="mdl-data-table__cell--non-numeric">Field</th>
+		<th class="mdl-data-table__cell--non-numeric">Value</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
+		<td class="mdl-data-table__cell--non-numeric">Group Name</td>
+		<td class="mdl-data-table__cell--non-numeric">{{ group.name }}</td>
+		</tr>
+		<tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
+		<td class="mdl-data-table__cell--non-numeric">School</td>
+		<td class="mdl-data-table__cell--non-numeric">{{ group.school }}</td>
+		</tr>	
+		</tbody>
 	{% if user_profile.picture %}
-		<img src="{{ user_profile.picture_path }}" alt="profile picture">
+		<tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
+		<td class="mdl-data-table__cell--non-numeric">Profile Picture</td>
+		<td class="mdl-data-table__cell--non-numeric"><img style="width:300px;" src="{{ user_profile.picture_path }}" alt="profile picture"></td>
+		</tr>
 	{% else %}
-		User has no picture
+                <tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
+                <td class="mdl-data-table__cell--non-numeric">Profile Picture</td>
+                <td class="mdl-data-table__cell--non-numeric">No Picture</td>
+                </tr>
 	{% endif %}
-	
+	</table>
+	<form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Submit" />
+	</form>
+	</div>
+
 	{% if is_admin %}
-	    	<h>Group Members</h>
-	    	<table name="group_member">
+		<div class="profile_table">
+	    	<h class="profile_table_head">Group Members</h>
+	    	<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp full-width" name="group_member">
+			<thead>
+			<tr>
+			<th class="mdl-data-table__cell--non-numeric full-width">User Name</th>
+			</tr>
+			<thead>
+			<tbody>
 	    		{% for member in group_members %}
-	    		<tr><td>Name:</td> <td>{{ member.user.username }}</td></tr>
+	    		<tr> <td>{{ member.user.username }}</td></tr>
 	    		{% endfor %}
+			<tbody>
 	    	</table>
-	    	<h>Pending Invites</h>
-	    	<table name="pending_invite">
+		</div>
+
+		<div class="profile_table">
+	    	<h class="profile_table_head">Pending Invites</h>
+	    	<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp full-width" name="pending_invite">
+                        <thead>
+                        <tr>
+                        <th class="mdl-data-table__cell--non-numeric full-width">Email</th>
+                        </tr>
+                        <thead>
+			<tbody id="invite_table">
 	    		{% for invite in pending_invite %}
-	    		<tr><td>Email:</td> <td>{{ invite.email }}</td></tr>
+	    		<tr> <td>{{ invite.email }}</td></tr>
 	    		{% endfor %}
+			</tbody>
 	    	</table>
+		</div>
 	    	<input type="email" id="invite_email" name="invite_email"/>
 	    	<button name="send_invite" id="send_invite" type="button">Send Invite</button>
 	{% endif %}

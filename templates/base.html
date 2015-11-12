@@ -10,7 +10,7 @@
 <body>
     <div id="header">
     {% block menu %}
-    <paper-item><a href="{% url 'index' %}">{% trans "Home" %}</a></paper-item><hr /> 
+    <paper-item><a href="{% url 'topics' %}">{% trans "Home" %}</a></paper-item><hr /> 
     {% if user.is_authenticated %}
       <paper-item>{% trans "Logged in" %}: {{ user.username }}</paper-item>
      <paper-item><a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a></paper-item> 

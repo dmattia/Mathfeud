@@ -1,4 +1,4 @@
-{% extends "blog/bbase.html" %}
+{% extends "qa/bbase.html" %}
 {% block css %}
 	#blog-item {
 		margin: 10px;
@@ -35,16 +35,16 @@
 
         <!-- Posts  -->
         <ul>
-            {% for post in posts.object_list %}
+            {% for question in questions.object_list %}
 		<paper-material elevation="1">
-		<a href="{% url "post" post.pk %}">
+		<a href="{% url "question" question.pk %}">
 		<div id="blog-item"> 
-                <div id="blog-title">{{ post.title }}</div>
+                <div id="blog-title">{{ question.title }}</div>
                 <ul>
-                    <div id="blog-body">{{ post.body | safe }}</div>
-                    <div id="blog-time">Posted at {{ post.created }}</div>
-		    <div id="blog-author">by {{ post.author }}</div>
-		    <div id="blog-comments">Comments: {{ post.commentCount }}</div> 
+                    <div id="blog-body">{{ question.body | safe }}</div>
+                    <div id="blog-time">Posted at {{ question.created }}</div>
+		    <div id="blog-author">by {{ question.poster.username }}</div>
+		    <div id="blog-comments">Comments: </div> 
                 </ul>
 		</div>
 		</a>
@@ -53,19 +53,19 @@
         </ul>
 
         <!-- Next/Prev page links  -->
-        {% if posts.object_list and posts.paginator.num_pages > 1 %}
+        {% if questions.object_list and questions.paginator.num_pages > 1 %}
         <div class="pagination" style="margin-top: 20px; margin-left: -20px; ">
             <span class="step-links">
-                {% if posts.has_previous %}
-                    <a href= "?page={{ posts.previous_page_number }}">newer entries &lt;&lt; </a>
+                {% if questions.has_previous %}
+                    <a href= "?page={{ questions.previous_page_number }}">newer entries &lt;&lt; </a>
                 {% endif %}
 
                 <span class="current">
-                    &nbsp;Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+                    &nbsp;Page {{ questions.number }} of {{ questions.paginator.num_pages }}
                 </span>
 
-                {% if posts.has_next %}
-                    <a href="?page={{ posts.next_page_number }}"> &gt;&gt; older entries</a>
+                {% if questions.has_next %}
+                    <a href="?page={{ questions.next_page_number }}"> &gt;&gt; older entries</a>
                 {% endif %}
             </span>
         </div>

@@ -2,11 +2,69 @@
 {% csrf_token %}
 {% load staticfiles %}
 
+{% block css %}
+	.comment {
+		margin-top: 25px;
+		color: #848484;
+		font: Futura Lt BT, Arial, sans-serif;
+	}
+	.time {
+		font-size: 13px;
+	}
+	.body {
+		font-size: 20px;
+	}
+	.poster {
+		font-size: 18px;
+	}
+	.inner_comment {
+		padding: 10px;
+	}
+	.description {
+		background-color: #E0E0E0;
+	}
+	.inner_description {
+		padding-left: 20px;
+		padding-right: 20px
+		padding-top: 10px;
+		padding-bottom: 20px;
+		margin-top: 15px;
+	}
+{% endblock %}
+
 {% block content %}
 
 <h2>{{ video.name }}</h2>
 <div class="videoWrapper">
 	<iframe width="560" height="349" src="{{ video.getEmbedUrl }}" frameborder="0" allowfullscreen></iframe>
 </div>
+
+<div class="description">
+	<paper-material elevation="3">
+		<div class="inner_description">
+			<h6>{{ video.description }}</h6>
+		</div>
+	</paper-item>
+</div>
+
+{% for comment in comments %}
+	<div class="comment">
+	<paper-material elevation="1">
+		<div class="inner_comment">
+			<div class="poster">{{ comment.poster.username }}</div>
+			<div class="body">{{ comment.body | safe }}</div>
+			<div class="time">{{ comment.created }}</div>
+		</div>
+	</paper-item>
+	</div>
+{% endfor %}
+
+<!-- Comment form -->
+<form action="" method="POST">
+	{% csrf_token %}
+	{{ myform.media }}
+	{{ myform.as_p }}
+	<div id="submit"><input class="mdl-botton--raised" type="submit" value="Comment"></div>
+</form>
 
 {% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block tool_title %} 
+ 	<a href="{% url 'newQuestion' %}">
+	<button class="mdl-button mdl-button--raised mdl-button--accent">New Question</button>
+ 	</a>
+{% endblock %}
+
+{% block content %}
+    <div id="container">
+        <div id="content">
+            {% block content_blog %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
+</html>

@@ -1,8 +1,8 @@
-{% extends "blog/bbase.html" %}
+{% extends "qa/bbase.html" %}
 {% block content_blog %}
-    <a href="{% url "blogList" %}">Back To Posts</a>
+    <a href="{% url "qaList" %}">Back To Questions</a>
 <!-- Comment form  -->
-<form action="{% url "add_post"  %}" method="POST">{% csrf_token %}
+<form action="{% url "add_question"  %}" method="POST">{% csrf_token %}
     <div id="cform">
 	{{ form.media }}
 	{{ form.as_p }}
