@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib import admin
+from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Video(models.Model):
         url = models.CharField(max_length=255)
         name = models.CharField(max_length=255)
 	topic = models.ForeignKey('Topic')
+	description = models.CharField(max_length=2000)
         def __unicode__(self):
                 return self.name
 	@property
@@ -22,5 +25,15 @@ class Topic(models.Model):
 	def __unicode__(self):
 		return self.name
 
+class VideoComment(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	poster = models.ForeignKey(User)
+	body = RichTextField()
+	post = models.ForeignKey(Video)
+
+	def __unicode(self):
+		return unicode("%s: %s" % (self.post, self.body[:60]))
+
 admin.site.register(Video)
 admin.site.register(Topic)
+admin.site.register(VideoComment)

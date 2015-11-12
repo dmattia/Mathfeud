@@ -4,14 +4,20 @@ from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
+from main.models import UserProfile
+from django import forms
+from ckeditor.widgets import CKEditorWidget
 import datetime
+from django.contrib.auth.decorators import login_required
 
 from blog.models import *
 # Create your views here.
 
+@login_required
 def main(request):
     """ Main listing"""
-    posts = Post.objects.all().order_by("-created")
+    current_group = UserProfile.objects.get(user=request.user).group
+    posts = Post.objects.all().filter(group=current_group).order_by("-created")
     paginator = Paginator(posts, 10)
 
     try: page = int(request.GET.get("page", '1'))
@@ -27,6 +33,7 @@ def main(request):
     context_dict = {'posts':posts, 'user':request.user}
     return render(request, 'blog/list.html', context_dict)
 
+@login_required
 def post(request, pk):
     post = Post.objects.get(pk=int(pk))
     d = {'post':post, 'user':request.user}
@@ -35,26 +42,23 @@ def post(request, pk):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        exclude = ["post"]
+	fields = ['body']
 
-def add_comment(request, pk):
-    """ Add a new comment. """
-    p = request.POST
+@login_required
+def add_comment(request, postID):
+	""" Add a new comment. """
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			newComment = Comment()
+			newComment.poster = request.user
+			newComment.group = UserProfile.objects.get(user=request.user).group
+			newComment.post = Post.objects.get(id=postID)
+			newComment.body = form.cleaned_data['body']
+			newComment.save()
+	return HttpResponseRedirect(reverse("post", args=[postID]))
 
-    if p.has_key("body") and p["body"]:
-        author = "Anonymous"
-        #if p["author"]: author = p["author"]
-	if request.user.is_authenticated():
-		author = request.user.username
-        comment = Comment(post=Post.objects.get(pk=pk))
-        cf = CommentForm(p, instance=comment)
-        cf.fields["author"].required = False
-
-        comment = cf.save(commit=False)
-        comment.author = author
-        comment.save()
-    return HttpResponseRedirect(reverse("post", args=[pk]))
-
+@login_required
 def post(request, pk):
     """ Single post with comments and a comment form """
     post = Post.objects.get(pk=int(pk))
@@ -66,24 +70,23 @@ def post(request, pk):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        exclude = ["post"]
+	fields = ['title', 'body']
 
+@login_required
 def add_post(request):
     """ Add a new blog. """
-    p = request.POST
-
-    if p.has_key("body") and p["body"]:
-        post = Post(title=p["title"], body=p["body"])
-	author = "anonymous"
-	if (request.user.is_authenticated()):
-		author = request.user.username
-        cf = PostForm(p, instance=post)
-        cf.fields["author"].required = False
-        post = cf.save(commit=False)
-	post.author = author
-        post.save()
+    if request.method == 'POST':
+	form = PostForm(request.POST)
+	if form.is_valid():
+		newPost = Post()
+		newPost.body = form.cleaned_data['body']	
+		newPost.title = form.cleaned_data['title']
+		newPost.poster = request.user
+		newPost.group = UserProfile.objects.get(user=request.user).group
+		newPost.save()
     return HttpResponseRedirect(reverse("blogList"))
 
+@login_required
 def NewPost(request):
     """ Add new post """
     context_dic = {'form':PostForm(), 'user':request.user}
