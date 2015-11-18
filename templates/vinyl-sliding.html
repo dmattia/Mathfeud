@@ -14,7 +14,12 @@
     <link rel="stylesheet" href="http://storage.googleapis.com/code.getmdl.io/1.0.1/material.teal-red.min.css" />
     <script src="http://storage.googleapis.com/code.getmdl.io/1.0.1/material.min.js"></script>   
     {# If this ^ is moved to bottom of page... it barfs thanks google. #}
-
+    <!-- Bootstrap -->
+    <link href="{% static '/static/css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
+    <link href="{% static '/static/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static '/static/css/bootstrap-responsive.css' %}" rel="stylesheet">
+    <link href="{% static '/static/css/style.css' %}" rel="stylesheet">
+    <script src="{% static '/static/js/bootstrap.min.js' %}"></script>
     {{"iron-icons/iron-icons.html"| dep}}
     {{"iron-flex-layout/iron-flex-layout.html"|dep}}
 
@@ -61,7 +66,7 @@
     </style>
 
     {% block head %}{% endblock %}
-    {% block title %}<title>Vinyl Siding: title</title> {% endblock %}
+    {% block title %}<title>Mathfeud</title> {% endblock %}
 </head>
 
 {% if 'debug' %}
@@ -85,7 +90,7 @@
       <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
       <div title>
 	<div horizontal layout>
-		Mathfeud {% block tool_title%}{%endblock%}
+	 Mathfeud{% block tool_title%}{%endblock%}
 	</div>
       </div>
     </paper-toolbar>

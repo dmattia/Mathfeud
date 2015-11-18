@@ -11,66 +11,108 @@ h {
 {% endblock %}
 
 {% block content %}
-	<div class="profile_table">
-	<table class="mdl-data-table mdl-js-data-table mdl-table-selectable mdl-shadow--2dp full-width" name="group_profile">
-		<thead>
-		<tr>
-		<th class="mdl-data-table__cell--non-numeric">Field</th>
-		<th class="mdl-data-table__cell--non-numeric">Value</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
-		<td class="mdl-data-table__cell--non-numeric">Group Name</td>
-		<td class="mdl-data-table__cell--non-numeric">{{ group.name }}</td>
-		</tr>
-		<tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
-		<td class="mdl-data-table__cell--non-numeric">School</td>
-		<td class="mdl-data-table__cell--non-numeric">{{ group.school }}</td>
-		</tr>	
-		</tbody>
-	{% if user_profile.picture %}
-		<tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
-		<td class="mdl-data-table__cell--non-numeric">Profile Picture</td>
-		<td class="mdl-data-table__cell--non-numeric"><img style="width:300px;" src="{{ user_profile.picture_path }}" alt="profile picture"></td>
-		</tr>
-	{% else %}
-                <tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic">
-                <td class="mdl-data-table__cell--non-numeric">Profile Picture</td>
-                <td class="mdl-data-table__cell--non-numeric">No Picture</td>
-                </tr>
+
+<div class="col-lg-6 col-sm-6">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+		{% if user_profile.picture %}
+            <img alt="" src="{{ user_profile.picture_path }}">
+		{% else %}
+            <img alt="" src="">
+		{% endif %}
+        </div>
+        <div class="card-info"> <span class="card-title">{{ user_profile.user.username }}</span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <div class="hidden-xs">My profile</div>
+            </button>
+        </div>
+       <div class="btn-group" role="group">
+            <button type="button" id="stars" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <div class="hidden-xs">Group profile</div>
+            </button>
+        </div>
+	{% if is_admin %}
+        <div class="btn-group" role="group">
+            <button type="button" id="favorites" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Group Members</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="following" class="btn btn-default" href="#tab4" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Invitation</div>
+            </button>
+        </div>
 	{% endif %}
-	</table>
-	<form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
+    </div>
+
+        <div class="well">
+	<div class="tab-content">
+          <div class="tab-pane fade in active" id="tab1">
+		<h3>My Profile</h3>
+		<form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ form }}
 		<input type="submit" value="Submit" />
-	</form>
-	</div>
-
-	{% if is_admin %}
+		</form>
+	  </div>
+        <div class="tab-pane fade in" id="tab2">
+	  <h3>My Group</h3>
+          	<div class="profile_table">
+		<table class="table" name="group_profile">
+		<thead>
+		<tr>
+		<th class="">Field</th>
+		<th class="">Value</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+		<td class="">Group Name</td>
+		<td class="">{{ group.name }}</td>
+		</tr>
+		<tr>
+		<td class="">School</td>
+		<td class="">{{ group.school }}</td>
+		</tr>	
+		</tbody>
+		</table>
+		</div>    
+        </div>
+        <div class="tab-pane fade in" id="tab3">
+          <h3>Group Members</h3>
 		<div class="profile_table">
-	    	<h class="profile_table_head">Group Members</h>
-	    	<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp full-width" name="group_member">
+	    	<table class="table" name="group_member">
 			<thead>
 			<tr>
-			<th class="mdl-data-table__cell--non-numeric full-width">User Name</th>
+			<th class="">User Name</th>
 			</tr>
 			<thead>
 			<tbody>
 	    		{% for member in group_members %}
-	    		<tr> <td>{{ member.user.username }}</td></tr>
+			<tr>
+	    		 <td>{{ member.user.username }}</td>
+			</tr>
 	    		{% endfor %}
 			<tbody>
 	    	</table>
 		</div>
-
+        </div>
+        <div class="tab-pane fade in" id="tab4">
+          <h3>Pending Invites</h3>
 		<div class="profile_table">
-	    	<h class="profile_table_head">Pending Invites</h>
-	    	<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp full-width" name="pending_invite">
+	    	<table class="table" name="pending_invite">
                         <thead>
                         <tr>
-                        <th class="mdl-data-table__cell--non-numeric full-width">Email</th>
+                        <th class="">Email</th>
                         </tr>
                         <thead>
 			<tbody id="invite_table">
@@ -82,5 +124,12 @@ h {
 		</div>
 	    	<input type="email" id="invite_email" name="invite_email"/>
 	    	<button name="send_invite" id="send_invite" type="button">Send Invite</button>
-	{% endif %}
+        </div>
+      </div>
+    </div>
+    
+    </div>
+            
+    
+
 {% endblock %}

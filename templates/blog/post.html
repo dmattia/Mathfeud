@@ -23,30 +23,68 @@
 {% endblock %}
 {% block content_blog %}
     <a href="{% url "blogList" %}">Back To Posts</a>
-    <!-- Post  -->
-    <div class="title">{{ post.title }}</div>
-    <ul>
-   <paper-material elevation="1">
-	<div class="time">{{ post.author }}</div>
-   	<div class="body" id="blog_body">{{ post.body | safe }}</div>
-	<div class="time">{{ post.created }}</div>
-   </paper-item>
-   </ul>
-    <!-- Comments  -->
 
-{% for comment in comments %}
-    <div class="comment">
-        <div class="poster">{{ comment.poster.username }}</div>
-        <div class="body">{{ comment.body | safe }}</div>
-	<div class="time">{{ comment.created }}</div>
-    </div>
-{% endfor %}
+    <!-- Page Content -->
+    <div class="container">
 
-<!-- Comment form  -->
-<form action="{% url "add_comment" post.id %}" method="POST">{% csrf_token %}
-	{{ form.media }}
-	{{ form.as_p }}
-	<div id="submit"><input class="mdl-button mdl-button--raised" type="submit" value="Comment"></div>
-</form>
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>{{ post.title }}</h1>
+
+                <!-- Author -->
+                <p class="lead">
+                    by <a href="#">{{ post.author }}</a>
+                </p>
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on {{ post.created }}</p>
+
+                <hr>
+
+                <!-- Post Content -->
+                <p class="lead"></p>
+		{{ post.body|safe }} 
+
+               <hr>
+
+                <!-- Blog Comments -->
+
+                <!-- Comments Form -->
+                <div class="well">
+                    <h4>Leave a Comment:</h4>
+               		<form action="{% url "add_comment" post.id %}" method="POST">{% csrf_token %}
+			{{ form.media }}
+			{{ form.as_p }}
+			<div id="submit"><input class="mdl-button mdl-button--raised" type="submit" value="Comment"></div>
+		</form>
+                </div>
+
+                <hr>
+
+                <!-- Posted Comments -->
+                <!-- Comment -->
+		{% for comment in comments %}
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" src="http://placehold.it/64x64" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ comment.poster.username }}
+                            <small>{{ comment.created }}</small>
+                        </h4>
+		{{ comment.body|safe }}
+                    </div>
+                </div>
+		{% endfor %}
+            </div>
+       </div>
 
 {% endblock %}

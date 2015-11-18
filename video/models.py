@@ -18,6 +18,9 @@ class Video(models.Model):
         @property
         def getEmbedUrl(self):
                 return self.url.replace("watch?v=","embed/",1) + "?modestbranding=1"
+	@property
+	def videoID(self):
+		return self.url.replace("https://www.youtube.com/watch?v=","",1)
 
 class Topic(models.Model):
 	name = models.CharField(max_length=255)

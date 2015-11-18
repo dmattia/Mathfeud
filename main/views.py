@@ -17,7 +17,7 @@ def index(request):
 
 def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
-
+    #send_mail("try", "message", 'mathfeud@psychstat.org', ['xwang29@nd.edu'], fail_silently=False)
     if request.method == 'POST':
         p = request.POST
         form = UpdateProfilePictureForm(p, request.FILES)
