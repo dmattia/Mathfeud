@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib import admin
+import uuid
 
-# Create your models here.
 class MultipleChoiceQuestion(models.Model):
 	# Will eventually need to create a model for a question with auto-generated variables
+	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	question = models.CharField(max_length=255)
 	option1 = models.CharField(max_length=255)
 	option2 = models.CharField(max_length=255)
