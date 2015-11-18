@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^accounts/profile/', include('main.urls')),
     url(r'^blog/', include('blog.urls')),
     url(r'^qa/', include('qa.urls')),
+    url(r'^quiz/', include('quiz.urls')),
     url(r'^videos/', include('video.urls')),
     url(r'', include(frontend_urls)),
     url(r'^images/(.*)$', 'django.views.static.serve', {
