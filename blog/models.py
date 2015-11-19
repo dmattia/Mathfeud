@@ -32,6 +32,9 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return unicode("%s: %s" % (self.post, self.body[:60]))
+    def poster_picture(self):
+	userprofile = UserProfile.objects.get(user=self.poster)
+	return userprofile.picture_path()
 
 class CommentAdmin(admin.ModelAdmin):
     display_fields = ["post", "author", "created"]
