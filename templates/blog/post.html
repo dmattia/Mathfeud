@@ -74,9 +74,8 @@
 		{% for comment in comments %}
                 <div class="media">
                     <a class="pull-left" href="#">
-			<div style="width:40px; height:40px;">
-                        <img class="media-object" src="{{ comment.poster_picture }}" alt="{{ comment.poster.username }}'s profile picture">
-			</div>
+                        <img class="media-object" src="{{ comment.poster_picture }}" alt="{{ comment.poster.username }}'s profile picture"
+				style="width:40px; height:40px">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">{{ comment.poster.username }}

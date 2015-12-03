@@ -1,76 +1,58 @@
 {% extends "blog/bbase.html" %}
 {% block css %}
-	#blog-item {
-		margin: 10px;
+	body {
+   		 padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 	}
-	#blog-title {
-		font-size: 20px;
-		font: 'Gotham Book', Gotham-Book, Arial, sans-serif;
-		text-transform: uppercase;
-		color: #3A3A3A;
-	}
-	#blog-body {
-		font-size: 18px;
-		font: Futura Bk BT, Arial, sans-serif;
-		color: #616161;
-	}
-	#blog-time {
-		font-size: 13px;
-		color: #848484;
-		font: Futura Lt BT, Arial, sans-serif;
-	}
-	#blog-author {
-		font-size: 14px;
-		color: #848484;
-		font: Futura Lt BT, Arial, sans-serif;
-		display: inline;
-	}
-	#blog-comments {
-		display: inline;
-		float: right;
+
+	footer {
+    		margin: 50px 0;
 	}
 {% endblock %}
 {% block content_blog %}
-    <div class="main">
+               <div class="row">
 
-        <!-- Posts  -->
-        <ul>
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+
+             <!-- First Blog Post -->
+
             {% for post in posts.object_list %}
-		<paper-material elevation="1">
-		<a href="{% url "post" post.pk %}">
-		<div id="blog-item"> 
-                <div id="blog-title">{{ post.title }}</div>
-                <ul>
-                    <div id="blog-body">{{ post.body | safe }}</div>
-                    <div id="blog-time">Posted at {{ post.created }}</div>
-		    <div id="blog-author">by {{ post.author }}</div>
-		    <div id="blog-comments">Comments: {{ post.commentCount }}</div> 
-                </ul>
-		</div>
-		</a>
-		</paper-material>
-            {% endfor %}
-        </ul>
+                <h2>
+                    <a href="{% url "post" post.pk %}">{{ post.title }}</a>
+                </h2>
+                <p class="lead">
+                    by <a href="#">{{ post.author }}</a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span>{{ post.created }}</p>
+                <hr>
+                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <hr>
+                <p>{{ post.body }}</p>
+                <a class="btn btn-primary" href="{% url "post" post.pk %}">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
-        <!-- Next/Prev page links  -->
-        {% if posts.object_list and posts.paginator.num_pages > 1 %}
-        <div class="pagination" style="margin-top: 20px; margin-left: -20px; ">
-            <span class="step-links">
-                {% if posts.has_previous %}
-                    <a href= "?page={{ posts.previous_page_number }}">newer entries &lt;&lt; </a>
-                {% endif %}
-
+                <hr>
+	{% endfor %}
+                <!-- Pager -->
+	{% if posts.object_list and posts.paginator.num_pages > 1 %}
+                <ul class="pager">
+		{% if posts.has_previous %}
+                    <li class="previous">
+                        <a href="?page={{ posts.previous_page_number }}">&larr; Newer</a>
+                    </li>
+		{% endif %}
+	
                 <span class="current">
                     &nbsp;Page {{ posts.number }} of {{ posts.paginator.num_pages }}
                 </span>
 
-                {% if posts.has_next %}
-                    <a href="?page={{ posts.next_page_number }}"> &gt;&gt; older entries</a>
-                {% endif %}
-            </span>
-        </div>
-        {% endif %}
 
-    </div>
-
+		{% if posts.has_next%}
+                    <li class="next">
+                        <a href="?page={{ posts.next_page_number }}">Older &rarr;</a>
+                    </li>
+		{% endif %}
+                </ul>
+	{% endif %}
+            </div>
+	</div>
 {% endblock %}

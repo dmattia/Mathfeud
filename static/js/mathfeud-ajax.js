@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	// set up material nav
+	//$(".button-collapse").sideNav();
+
 	$.ajaxSetup({ 
    	  beforeSend: function(xhr, settings) {
         	 function getCookie(name) {

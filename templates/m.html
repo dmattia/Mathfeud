@@ -1,0 +1,42 @@
+{% extends "vinyl-sliding.html" %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+    <div id="header">
+    {% block menu %}
+    <paper-item><a href="{% url 'topics' %}">{% trans "Home" %}</a></paper-item><hr /> 
+    {% if user.is_authenticated %}
+      <paper-item>{% trans "Logged in" %}: {{ user.username }}</paper-item>
+     <paper-item><a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a></paper-item> 
+      <paper-item><a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a></paper-item> 
+      <paper-item><a href="{% url 'topics' %}">Videos</a></paper-item>
+      <paper-item><a href="{% url 'blogList' %}">Blog</a></paper-item> 
+      <paper-item><a href="{% url 'user_profile' %}"> Profile  </a></paper-item>
+
+    {% else %}
+      <paper-item><a href="{% url 'auth_login' %}">{% trans "Log in" %}</a></paper-item>
+    {% endif %}
+    {% endblock %}
+    </div>
+
+    <div class="layout vertical">
+    <div id="content">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+    <div id="footer">
+    {% block footer %}
+        <hr />
+    {% endblock %}
+    </div>
+    </div>
+
+</body>
+
+</html>
