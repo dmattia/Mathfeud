@@ -8,11 +8,20 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def topicList(request):
-	return render(request, 'main/topics.html', {'topics': Topic.objects.all().order_by('grade')})
+	allTopics = Topic.objects.all().order_by('grade')
+	topicsWithVideos = []
+	for topic in allTopics:
+		if len(Video.objects.filter(topic=topic)) > 0:
+			topicsWithVideos.append(topic)
+	return render(request, 'main/topics.html', {'topics': topicsWithVideos})
 
 @login_required
 def getVideos(request, topicName):
-        return render(request, 'main/videos.html', {'videos': Video.objects.filter(topic=Topic.objects.get(name=topicName))})
+	params = {
+		'videos': Video.objects.filter(topic=Topic.objects.get(name=topicName)),
+		'topic': topicName,
+	}
+        return render(request, 'main/videos.html', params)
 
 @login_required
 def getVideo(request, vidNumber):

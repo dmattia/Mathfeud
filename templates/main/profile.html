@@ -1,45 +1,54 @@
 {% extends 'base.html' %}
 {% csrf_token %}
 
-{% block css %}
-.profile_table {
-	margin-top: 10px;
-}
-h {
-	font: 'Gotham Book', Gotham-Book, Arial, sans-serif;
-}
-{% endblock %}
-
 {% block content %}
 
-<div class="col-lg-6 col-sm-6">
-    <div class="card hovercard">
-        <div class="card-background">
-            <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
-            <!-- http://lorempixel.com/850/280/people/9/ -->
-        </div>
-        <div class="useravatar">
-		{% if user_profile.picture %}
-            <img alt="" src="{{ user_profile.picture_path }}">
-		{% else %}
-            <img alt="" src="">
-		{% endif %}
-        </div>
-        <div class="card-info"> <span class="card-title">{{ user_profile.user.username }}</span>
+<div class="row">
+	<div class="col s12 row" style="margin-top:20px;">
+		<ul class="tabs thick">
+			<li class="tab col s3"><a class="active" href="#profile">My profile</a></li>
+			<li class="tab col s3"><a href="#group">Group profile</a></li>
+		</ul>
+		<div id="profile" class="col row s12 card z-depth-4 white blue-text">
+			<div class="card-image col s4">
+				{% if user_profile.picture_path %}
+				<img src="{{ user_profile.picture_path }}">
+				{% else %}
+				<img src="http://blogs.plos.org/opens/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png">
+				{% endif %}
+				<span class="card-title">Profile Picture</span>
+			</div>
+			<div class="card-content col s8">
+				<h3 class="thin">Hello {{ user_profile.user.username }}</h3>
+				<form class="row" action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="col s12">
+						{{ form }}
+					</div>
+					<input style="margin-top:15px;" class="waves-effect btn btn-medium blue white-text" type="submit" value="Submit" />
+				</form>
+			</div>
+		</div>
+		<div id="group" class="col s12 card white blue-text">
+			<table>
+				<thead>
+					<tr>
+						<th data-field="Name">Name</th>
+						<th data-field="School">School</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ group.name }}</td>
+						<td>{{ group.school }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 
-        </div>
-    </div>
-    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-        <div class="btn-group" role="group">
-            <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <div class="hidden-xs">My profile</div>
-            </button>
-        </div>
-       <div class="btn-group" role="group">
-            <button type="button" id="stars" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <div class="hidden-xs">Group profile</div>
-            </button>
-        </div>
+<!--
 	{% if is_admin %}
         <div class="btn-group" role="group">
             <button type="button" id="favorites" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
@@ -52,41 +61,6 @@ h {
             </button>
         </div>
 	{% endif %}
-    </div>
-
-        <div class="well">
-	<div class="tab-content">
-          <div class="tab-pane fade in active" id="tab1">
-		<h3>My Profile</h3>
-		<form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Submit" />
-		</form>
-	  </div>
-        <div class="tab-pane fade in" id="tab2">
-	  <h3>My Group</h3>
-          	<div class="profile_table">
-		<table class="table" name="group_profile">
-		<thead>
-		<tr>
-		<th class="">Field</th>
-		<th class="">Value</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-		<td class="">Group Name</td>
-		<td class="">{{ group.name }}</td>
-		</tr>
-		<tr>
-		<td class="">School</td>
-		<td class="">{{ group.school }}</td>
-		</tr>	
-		</tbody>
-		</table>
-		</div>    
-        </div>
         <div class="tab-pane fade in" id="tab3">
           <h3>Group Members</h3>
 		<div class="profile_table">
@@ -129,7 +103,7 @@ h {
     </div>
     
     </div>
-            
+-->            
     
 
 {% endblock %}

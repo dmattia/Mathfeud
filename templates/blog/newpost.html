@@ -1,13 +1,26 @@
-{% extends "blog/bbase.html" %}
-{% block content_blog %}
-    <a href="{% url "blogList" %}">Back To Posts</a>
-<!-- Comment form  -->
-<form action="{% url "add_post"  %}" method="POST">{% csrf_token %}
-    <div id="cform">
-	{{ form.media }}
-	{{ form.as_p }}
-    </div>
-    <div id="submit"><input class="mdl-button mdl-button--raised" type="submit" value="Submit"></div>
-</form>
+{% extends "base.html" %}
+
+{% block body_color %}
+grey lighten-3
+{% endblock %}
+
+{% block body_font_color %}
+#202020;
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="row col s12">
+		<a class="z-index-3 col s12 waves-effect blue thick white-text btn btn-large" href="{% url "blogList" %}">Back To Posts</a>
+	</div>
+	<form action="{% url "add_post"  %}" method="POST">{% csrf_token %}
+	    <div id="cform">
+		{{ form.media }}
+		{{ form.as_p }}
+	    </div>
+	    <input type="submit" class="btn btn-medium waves-effect blue thick white-text" value="Post">
+	</form>
+</div>
 
 {% endblock %}

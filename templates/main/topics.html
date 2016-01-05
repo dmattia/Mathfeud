@@ -4,11 +4,11 @@
 
 {% block content %}
 
-{% for topic in topics %}
-	<hr>
-	<a href="/videos/{{ topic.name }}">
-		<h4>{{ topic.name }}</h4>
-	</a>
-{% endfor %}
+<h3>Topic List</h3>
+<ul class="collection z-depth-4">
+	{% for topic in topics %}
+        <a href="/videos/{{topic.name}}" class="collection-item">{{ topic.name }}</a>
+	{% endfor %}
+</ul>
 
 {% endblock %}

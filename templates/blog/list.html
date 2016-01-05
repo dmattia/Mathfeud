@@ -1,38 +1,38 @@
-{% extends "blog/bbase.html" %}
-{% block css %}
-	body {
-   		 padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-	}
+{% extends "base.html" %}
 
-	footer {
-    		margin: 50px 0;
-	}
+{% block body_font_color %}
+#202020;
 {% endblock %}
-{% block content_blog %}
-               <div class="row">
 
-            <!-- Blog Entries Column -->
-            <div class="col-md-8">
+{% block body_color %}
+grey lighten-3
+{% endblock %}
 
-             <!-- First Blog Post -->
+{% block content %}
 
-            {% for post in posts.object_list %}
-                <h2>
-                    <a href="{% url "post" post.pk %}">{{ post.title }}</a>
-                </h2>
-                <p class="lead">
-                    by <a href="#">{{ post.author }}</a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span>{{ post.created }}</p>
-                <hr>
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <hr>
-                <p>{{ post.body }}</p>
-                <a class="btn btn-primary" href="{% url "post" post.pk %}">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                <hr>
+<div class="row">
+	<div class="col s12 row">
+		<a class="btn btn-large waves-effect col s12 white thick blue-text" href="{% url 'newPost' %}" style="margin-top:20px;">New Post</a>
+	</div>
+	{% for post in posts.object_list %}
+	<div class="col s12 card blue z-index-2">
+		<div class="card-content white-text">
+			<h2><a href="{% url 'post' post.pk %}" style="color:#FFF;">{{ post.title }}</a></h2>
+			<p>
+				Post By: {{ post.author }}<br>
+				Posted: {{ post.created }}<br>
+			</p>
+			<!--<div>{{ post.body | striptags }}</div>-->
+		</div>
+		<div class="card-action">
+                	<a href="{% url "post" post.pk %}" class="btn btn-medium waves-effect thick white" style="color:#2196f3;">Read More</a>
+		</div>
+	</div>
 	{% endfor %}
-                <!-- Pager -->
+</div>
+
+<!--
+        <div class="row">
 	{% if posts.object_list and posts.paginator.num_pages > 1 %}
                 <ul class="pager">
 		{% if posts.has_previous %}
@@ -55,4 +55,5 @@
 	{% endif %}
             </div>
 	</div>
+-->
 {% endblock %}

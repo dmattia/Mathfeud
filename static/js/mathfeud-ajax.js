@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	// set up material nav
-	//$(".button-collapse").sideNav();
+	$(".button-collapse").sideNav();
 
 	$.ajaxSetup({ 
    	  beforeSend: function(xhr, settings) {

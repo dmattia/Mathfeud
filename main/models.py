@@ -1,6 +1,7 @@
-from django.db import models
-from django.contrib import admin
 from django.contrib.auth.models import User, Group
+from django.contrib import admin
+from django.db import models
+from PIL import Image, ImageOps
 
 # Create your models here.
 class GroupProfile(models.Model):
@@ -21,7 +22,30 @@ class UserProfile(models.Model):
 	def __unicode__(self):
 		return self.user.username
 	def picture_path(self):
-		return self.picture.url.replace('/mathfeud/mathfeud','',1)
+		if self.picture:
+			return self.picture.url.replace('/mathfeud/mathfeud','',1)
+		else:
+			return False
+	'''
+	def save(self):
+		if not self.picture:
+			return
+
+		super(UserProfile, self).save()
+
+	        image = Image.open(self.picture)
+	        (width, height) = image.size
+	
+	        "Max width and height 512"        
+	        if (512 / width < 512 / height):
+	            factor = 512 / height
+	        else:
+	            factor = 512 / width
+	
+	        size = ( width / factor, height / factor)
+	        image = image.resize(size, Image.ANTIALIAS)
+	        image.save(self.photo.path)
+	'''
 
 class PendingInvite(models.Model):
 	group = models.ForeignKey(GroupProfile)

@@ -1,12 +1,24 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block body_color %}
+white
+{% endblock %}
+
+{% block body_font_color %}
+#202020;
+{% endblock %}
+
 {% block content %}
 <form method="post" action=".">
   {% csrf_token %} 
   {{ form.as_p }}
-  <input type="submit" value="{% trans 'Log in' %}" />
+  <input class="btn btn-medium blue waves-effect" type="submit" value="{% trans 'Log in' %}" />
+  {% if next %}
   <input type="hidden" name="next" value="{{ next }}" />
+  {% else %}
+  <input type="hidden" name="next" value="/videos/" />
+  {% endif %}
 </form>
 
 <p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>

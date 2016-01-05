@@ -1,91 +1,49 @@
-{% extends "blog/bbase.html" %}
-{% block css %}
-	.title {
-		text-align: center;
-		font-size: 25px;
-                font: 'Gotham Book', Gotham-Book, Arial, sans-serif;
-                text-transform: capitalize;
-                color: #3A3A3A;
-	}
-	.time {
-		font-size: 13px;
-                color: #848484;
-                font: Futura Lt BT, Arial, sans-serif;
-	}
-	.body {
-		font-size: 20px;
-                font: Futura Bk BT, Arial, sans-serif;
-                color: #616161;
-	}
-	#blog_body {
-		font-size: 20px;
-	}
-{% endblock %}
-{% block content_blog %}
-    <a href="{% url "blogList" %}">Back To Posts</a>
+{% extends "base.html" %}
 
-    <!-- Page Content -->
-    <div class="container">
-
-        <div class="row">
-
-            <!-- Blog Post Content Column -->
-            <div class="col-lg-8">
-
-                <!-- Blog Post -->
-
-                <!-- Title -->
-                <h1>{{ post.title }}</h1>
-
-                <!-- Author -->
-                <p class="lead">
-                    by <a href="#">{{ post.author }}</a>
-                </p>
-
-                <hr>
-
-                <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on {{ post.created }}</p>
-
-                <hr>
-
-                <!-- Post Content -->
-                <p class="lead"></p>
-		{{ post.body|safe }} 
-
-               <hr>
-
-                <!-- Blog Comments -->
-
-                <!-- Comments Form -->
-                <div class="well">
-                    <h4>Leave a Comment:</h4>
-               		<form action="{% url "add_comment" post.id %}" method="POST">{% csrf_token %}
+{% block content %}
+<div class="row">
+	<div class="col s12 row" style="margin-top:20px;">
+		<a href="{% url 'blogList' %}" class="z-depth-3 btn btn-medium white waves-effect col s4 offset-s4 thick blue-text">Back To Posts</a>
+	</div>
+	<div class="col s12 card z-depth-4">
+		<div class="card-content blue-text">
+			<h3>{{ post.title }}</h3>
+			<hr>
+			<p>By: {{ post.author }}<br>
+			   Posted on: {{ post.created }}
+			</p>
+			<hr>
+			<div class="thick">
+				{{ post.body | safe }}
+			</div>
+		</div>
+	</div>
+	<div class="col s12 row">
+		<h4>Leave a comment:</h4>
+		<form class="col s12" action="{% url 'add_comment' post.id %}" method="POST">
+			{% csrf_token %}
 			{{ form.media }}
 			{{ form.as_p }}
-			<div id="submit"><input class="mdl-button mdl-button--raised" type="submit" value="Comment"></div>
+			<input type="submit" class="btn btn-medium waves-effect z-depth-3 white blue-text thick" value="Comment"></input>
 		</form>
-                </div>
-
-                <hr>
-
-                <!-- Posted Comments -->
-                <!-- Comment -->
+	</div>
+	<div class="col s12 row">
 		{% for comment in comments %}
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="{{ comment.poster_picture }}" alt="{{ comment.poster.username }}'s profile picture"
-				style="width:40px; height:40px">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">{{ comment.poster.username }}
-                            <small>{{ comment.created }}</small>
-                        </h4>
-		{{ comment.body|safe }}
-                    </div>
-                </div>
+		<div class="col s12 card white z-depth-2 row valign-wrapper" style="margin-top:15px;">
+			<div class="col s1">
+				{% if comment.poster_picture %}
+				<img class="responsive-img circle" src="{{ comment.poster_picture }}">
+				{% else %}
+				<img class="responsive-img circle" src="http://blogs.plos.org/opens/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png">
+				{% endif %}
+			</div>
+			<div class="card-content blue-text col s11">
+				<span class="card-title">Comment by: {{ comment.poster.username }}</span>
+				<div>{{ comment.body | safe }}</div>
+			</div>
+		</div>
 		{% endfor %}
-            </div>
-       </div>
+	</div>
+</div>
 
 {% endblock %}
