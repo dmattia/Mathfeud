@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def topicList(request):
-	allTopics = Topic.objects.all().order_by('grade')
+	allTopics = Topic.objects.all().order_by('grade').order_by('order_value')
 	topicsWithVideos = []
 	for topic in allTopics:
 		if len(Video.objects.filter(topic=topic)) > 0:

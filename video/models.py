@@ -25,6 +25,7 @@ class Video(models.Model):
 class Topic(models.Model):
 	name = models.CharField(max_length=255)
 	grade = models.IntegerField()
+	order_value = models.IntegerField() #To create an order of the topics. Smaller will appear first
 	def __unicode__(self):
 		return self.name
 
