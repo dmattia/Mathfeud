@@ -3,6 +3,7 @@ from video.models import *
 from video.forms import VideoCommentForm
 from main.models import UserProfile
 from django.contrib.auth.decorators import login_required
+from quiz.models import Question, Answer
 
 # Create your views here.
 
@@ -45,3 +46,25 @@ def getVideo(request, vidNumber):
 		'myform': form,
 	}
         return render(request, 'main/video.html', args)
+
+@login_required
+def getVideoQuiz(request, vidNumber):
+	""" Renders a view.
+	Ouput Parameters:
+		@questionDict: A Dictionary of Questions to sets of Answers
+		that belong to that question
+	"""
+	video = Video.objects.get(id=vidNumber)
+	questions = Question.objects.filter(video_ref=video)
+	questionDict = {}
+	for question in questions:
+		answers_for_question = set()
+		answer_query_set = Answer.objects.filter(question_ref=question)
+		for answer in answer_query_set:
+			answers_for_question.add(answer)
+		questionDict[question] = answers_for_question
+	args = {
+		'questionDict': questionDict,
+	}
+	print "Length of quiz: " + str(len(questionDict))
+	return render(request, 'quiz/questions.html', args)

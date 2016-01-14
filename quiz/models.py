@@ -26,8 +26,12 @@ class Answer(models.Model):
 	answer_text = models.CharField(max_length=255)
 	correct = models.BooleanField()
 
-	def __unicode(self):
-		return unicode("%s" % (self.answer_text))
+	def __unicode__(self):
+		if self.correct:
+			correct_str = "Correct"	
+		else:
+			correct_str = "Incorrect"	
+		return unicode("%s answer to question: %s" % (correct_str, self.question_ref.question_text))
 
 admin.site.register(Question)
 admin.site.register(Answer)

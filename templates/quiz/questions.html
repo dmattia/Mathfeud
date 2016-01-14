@@ -1,14 +1,33 @@
-{% extends "blog/bbase.html" %}
-{% block css %}
+{% extends "base.html" %}
+
+{% block body_font_color %}
+#202020;
 {% endblock %}
 
-{% block content_blog %}
-    <div class="main">
-	<form method="post">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type="submit" value="submit">
-	</form>
-	<p id="result">{{ result }}</p>
-    </div>
+{% block body_color %}
+grey lighten-3
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	{% for question, answers in questionDict.items %}
+		<div class="col s12 card">
+			<span class="card-title">{{ question.question_text }}</span>	
+			<form method="POST" action="">
+			{% csrf_token %}
+			{% for answer in answers %}
+				<p>
+					<input type="checkbox" id="answer{{ answer.id }}" />
+					<label for="answer{{ answer.id }}">{{ answer.answer_text }}</label>
+				</p>	
+			{% endfor %}
+				<div class="card-action">
+					<button class="btn btn-medium blue waves-effect" type="submit">Submit</button>
+				</div>
+			</form>
+		</div>
+	{% endfor %}
+</div>
+
 {% endblock %}
