@@ -25,6 +25,41 @@ $(document).ready(function() {
        		  }
     	 } 
 	});
+
+	// Check an answer for correctness
+	$('.quizQuestion').submit(function(event){
+		event.preventDefault()
+		var formData = $(this).serialize()
+		$.ajax({
+			url: "/quiz/checkSubmission/",
+			type: "POST",
+			data: JSON.stringify({
+				'formData': formData
+			}),
+			//dataType: "application/json",
+			//contentType: "text/plain",
+			success: function(response) {
+				console.log(response)
+				if(response['valid-response'] == 'Yes') {
+					Materialize.toast(response['Correct'], 4000);
+				} else {
+					Materialize.toast("Invalid Response", 4000);
+				}
+				/*
+				if(response) {
+					Materialize.toast("Correct: " + response, 4000);
+				} else {
+					Materialize.toast("Incorrect", 4000);
+				}
+				*/
+			},
+			error: function(xhr, errmsg, err) {
+				Materialize.toast("Something went wrong.", 4000);
+				console.log(errmsg + ": " + err);
+				console.log(xhr.status + ": " + xhr.responseText);
+			}
+		});
+	});
 	
 	var pending_invite_div = $('#invite_table');
 	var i = $('#invite_table tr').size() + 1;
@@ -32,7 +67,6 @@ $(document).ready(function() {
 	$('#send_invite').click(function(){
 		console.log("send invite is working!");
 		console.log($('#invite_email').val());
-		//pending_invite__div.append("hello");
 		$.ajax({
 			url : "send_invite/",
 			type : "POST",

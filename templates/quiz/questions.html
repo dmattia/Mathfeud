@@ -14,14 +14,15 @@ grey lighten-3
 	{% for question, answers in questionDict.items %}
 		<div class="col s12 card">
 			<span class="card-title">{{ question.question_text }}</span>	
-			<form method="POST" action="">
+			<form method="POST" class="quizQuestion" action="">
 			{% csrf_token %}
 			{% for answer in answers %}
 				<p>
-					<input type="checkbox" id="answer{{ answer.id }}" />
+					<input type="checkbox" name="answer{{ answer.id }}" id="answer{{ answer.id }}" />
 					<label for="answer{{ answer.id }}">{{ answer.answer_text }}</label>
 				</p>	
 			{% endfor %}
+				<input type="hidden" value="{{ question.id }}" name="questionNumber" />
 				<div class="card-action">
 					<button class="btn btn-medium blue waves-effect" type="submit">Submit</button>
 				</div>

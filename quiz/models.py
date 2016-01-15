@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from video.models import Video
-import uuid
+from django import forms
 
 class Question(models.Model):
 	"""A Question to be asked along with a particular video
@@ -14,6 +14,9 @@ class Question(models.Model):
 
 	def __unicode__(self):
 		return unicode("%s" % (self.question_text))
+
+	def answer_set(self):
+		return Answer.objects.filter(question_ref=self)
 
 class Answer(models.Model):
 	"""A possible answer to a Question
