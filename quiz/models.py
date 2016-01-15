@@ -1,7 +1,8 @@
 from django.db import models
+from django import forms
 from django.contrib import admin
 from video.models import Video
-from django import forms
+from main.models import UserProfile
 
 class Question(models.Model):
 	"""A Question to be asked along with a particular video
@@ -35,6 +36,22 @@ class Answer(models.Model):
 		else:
 			correct_str = "Incorrect"	
 		return unicode("%s answer to question: %s" % (correct_str, self.question_ref.question_text))
+
+class QuestionResponse(models.Model):
+	"""A response to a quiz question.
+	
+	@user: The user who answered the question
+	@question: The question that was answered
+	@correct: True if the user answered the question correctly
+	@time: The time of this submission
+	"""
+	user = models.ForeignKey('main.UserProfile')
+	question = models.ForeignKey('Question')
+	correct = models.BooleanField()
+	time = models.DateTimeField(auto_now=True)
+
+	def __unicode__(self):
+		return unicode("%s response to: \"%s\"" % (self.user, self.question))
 
 admin.site.register(Question)
 admin.site.register(Answer)

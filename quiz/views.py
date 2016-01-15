@@ -1,14 +1,17 @@
 from django.shortcuts import render
-from quiz.models import Question, Answer
+from quiz.models import Question, Answer, QuestionResponse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import json
 import re
+from main.models import UserProfile
 
 @login_required
 def checkQuestionSubmission(request):
 	""" Takes in post data from question form
 	Determines if the question was answered correctly
+	Adds a "Question Response" row recording this submission
+
 	Returns:
 		HttpResponse containing application/json data from @response
 		@response: dictionary on if the answer was correct with a possible explaination
@@ -29,18 +32,26 @@ def checkQuestionSubmission(request):
 				if answer.correct and user_answer != 'on':
 					response['Correct'] = 'Incorrect'
 					response['Explaination'] = 'The correct answer was not chosen'
-					return HttpResponse(json.dumps(response), content_type="application/json")
 				if not answer.correct and user_answer:
 					response['Correct'] = 'Incorrect'
 					response['Explaination'] = 'The correct answer was not chosen'
-					return HttpResponse(json.dumps(response), content_type="application/json")
-			return HttpResponse(json.dumps(response), content_type="application/json")
 		else:
 			response['valid-response'] = 'No'
 			response['Explaination'] = 'Server Error: Question number could not be determined'
-			return HttpResponse(json.dumps(response), content_type="application/json")
 	else:
 		response['valid-response'] = 'No'
 		response['Correct'] = 'Incorrect'
 		response['Explaination'] = 'This page can only be accessed via a POST request'
-		return HttpResponse(json.dumps(response), content_type="application/json")
+
+	recordResponse(request, question, response['Correct'])
+	return HttpResponse(json.dumps(response), content_type="application/json")
+
+@login_required
+def recordResponse(request, question, correct):
+	""" Records the question response
+	"""
+	response = QuestionResponse()
+	response.user = UserProfile.objects.get(user=request.user)
+	response.question = question
+	response.correct = bool(correct == 'Correct')
+	response.save()
