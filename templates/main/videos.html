@@ -3,13 +3,17 @@
 {% load staticfiles %}
 
 {% block content %}
-
+<div class="row">
+	<a href="{% url 'topics' %}">
+	<button class="col s12 waves-effect waves-light btn white thick blue-text" style="margin-top:20px">Back</button>
+	</a>
+</div>
 <h3 class="thin">{{ topic }}</h3>
 <ul class="collection">
 	{% for video in videos %}
 	<li class="collection-item avatar">
 		<img src="http://img.youtube.com/vi/{{ video.videoID }}/0.jpg" alt="" class="circle">
-		<span class="title">{{ video.topic.name }}</span>
+		<span class="title">{{ video.name }}</span>
 		<p>Grade: {{ video.grade }} <br>
 		   Topic: {{ video.topic.name }}
 		</p>

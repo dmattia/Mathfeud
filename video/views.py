@@ -4,6 +4,7 @@ from video.forms import VideoCommentForm
 from main.models import UserProfile
 from django.contrib.auth.decorators import login_required
 from quiz.models import Question, Answer
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -65,6 +66,15 @@ def getVideoQuiz(request, vidNumber):
 		questionDict[question] = answers_for_question
 	args = {
 		'questionDict': questionDict,
+		'questionCount': len(questionDict),
+		'vidNumber': vidNumber,
+		'vidTopic': video.topic,
 	}
-	print "Length of quiz: " + str(len(questionDict))
 	return render(request, 'quiz/questions.html', args)
+
+@login_required
+def returnToPrevPage(request):
+	"""
+		Simply returns back to previous page
+	"""
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

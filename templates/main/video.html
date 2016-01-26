@@ -11,6 +11,11 @@ grey lighten-2
 {% endblock %}
 
 {% block content %}
+<div class="row">
+	<a  href="{% url 'topics' %}{{ video.topic.name }}">
+	<button class="col s12 waves-effect waves-light btn white thick blue-text" style="margin-top:20px">Back</button>
+	</a>
+</div>
 
 <h3 class="thin">{{ video.name }}</h3>
 <div class="video-container">
@@ -24,6 +29,12 @@ grey lighten-2
 			<p>{{ video.description }}</p>
 		</div>
 	</div>
+</div>
+
+<div class="row">
+	<a  href="quiz">
+	<button class="col s12 waves-effect waves-light btn btn-large white thick blue-text">Take the Quiz</button>
+	</a>
 </div>
 
 {% for comment in comments %}
