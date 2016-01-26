@@ -3,7 +3,7 @@ from video.models import *
 from video.forms import VideoCommentForm
 from main.models import UserProfile
 from django.contrib.auth.decorators import login_required
-from quiz.models import Question, Answer
+from quiz.models import Question, Answer, QuestionResponse
 from django.http import HttpResponseRedirect
 
 # Create your views here.
@@ -55,15 +55,31 @@ def getVideoQuiz(request, vidNumber):
 		@questionDict: A Dictionary of Questions to sets of Answers
 		that belong to that question
 	"""
+	currentUser = UserProfile.objects.get(user=request.user)
 	video = Video.objects.get(id=vidNumber)
 	questions = Question.objects.filter(video_ref=video)
 	questionDict = {}
 	for question in questions:
-		answers_for_question = set()
+		hasBeenAnswered = False
+		isCorrect = False
+		responsesFromUser = QuestionResponse.objects.filter(user=currentUser)
+		if responsesFromUser:
+			responsesForThisQuestion = responsesFromUser.filter(question=question)
+			if len(responsesForThisQuestion) == 1:
+				hasBeenAnswered = True
+				isCorrect = responsesForThisQuestion[0].correct
+			elif len(responsesForThisQuestion) > 1:
+				# Shouldn't ever reach here. This means this user
+				# has answered this question multiple times
+				hasBeenAnswered = True
+				isCorrect = False
+
+		answers_for_question = []
 		answer_query_set = Answer.objects.filter(question_ref=question)
 		for answer in answer_query_set:
-			answers_for_question.add(answer)
-		questionDict[question] = answers_for_question
+			answers_for_question.append(answer)
+		questionDict[question] = [answers_for_question, hasBeenAnswered, isCorrect]
+		#questionDict[question] = answers_for_question
 	args = {
 		'questionDict': questionDict,
 		'questionCount': len(questionDict),

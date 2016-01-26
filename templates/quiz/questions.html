@@ -22,7 +22,7 @@ grey lighten-3
 				<span class="card-title">{{ question.question_text }}</span>	
 				<form method="POST" class="quizQuestion" action="">
 				{% csrf_token %}
-				{% for answer in answers %}
+				{% for answer in answers.0 %}
 					<p>
 						<input type="checkbox" name="answer{{ answer.id }}" id="answer{{ answer.id }}" />
 						<label for="answer{{ answer.id }}">{{ answer.answer_text }}</label>
@@ -30,7 +30,18 @@ grey lighten-3
 				{% endfor %}
 					<input type="hidden" value="{{ question.id }}" name="questionNumber" />
 					<div class="card-action">
-						<button class="btn btn-medium blue waves-effect thick" type="submit">Submit</button>
+						{% if answers.1 %}
+							<div class="btn btn-medium disabled thick">Submit</div>
+							<span style="padding: 5px;" class="white-text
+							{% if answers.2 %}
+								green">Correct
+							{% else %}	
+								red">Incorrect
+							{% endif %}
+							</span>
+						{% else %}
+							<button class="btn btn-medium blue waves-effect thick" type="submit">Submit</button>
+						{% endif %}
 					</div>
 				</form>
 			</div>
