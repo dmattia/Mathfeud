@@ -18,9 +18,11 @@ class Answer(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     poster = models.ForeignKey(UserProfile, null=True)
     body = RichTextField()
+    score = models.IntegerField(default=0)
+    isBestAnswer = models.BooleanField(default=False)
     question = models.ForeignKey(Question)
     def __unicode__(self):
-        return unicode("%s: %s" % (self.post, self.body[:60]))
+        return unicode("%s: %s" % (self.question.title, self.body[:60]))
 
 admin.site.register(Question)
 admin.site.register(Answer)

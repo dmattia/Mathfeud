@@ -44,8 +44,46 @@
 					</tr>
 				</tbody>
 			</table>
+			{% if is_admin %}
+                        <table>
+				<caption>Group Members</caption>
+				<thead>
+					<tr>
+						<th data-field="username">User Name</th>
+						<th data-field="email">Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for group_member in group_members %}
+					<tr>
+						<td>{{ group_member.user.username }}</td>
+						<td>{{ group_member.user.email }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<table id="invite_table">
+				<caption>Pending Invites</caption>
+				<thead>
+					<tr>
+						<th data-field="email">Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for invite in pending_invites %}
+					<tr>
+						<td>{{ invite.email }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<input id="invite_email" type="email" class="validate"></input>
+			<button id="send_invite" class="waves-effect waves-light btn">Send Invite</button>
+			{% endif %}
 		</div>
-	</div>
+	       
+        </div>
 </div>
 
 <!--

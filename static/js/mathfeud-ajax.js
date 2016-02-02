@@ -36,8 +36,6 @@ $(document).ready(function() {
 			data: JSON.stringify({
 				'formData': formData
 			}),
-			//dataType: "application/json",
-			//contentType: "text/plain",
 			success: function(response) {
 				console.log(response)
 				if(response['valid-response'] == 'Yes') {
@@ -45,13 +43,6 @@ $(document).ready(function() {
 				} else {
 					Materialize.toast("Invalid Response", 4000);
 				}
-				/*
-				if(response) {
-					Materialize.toast("Correct: " + response, 4000);
-				} else {
-					Materialize.toast("Incorrect", 4000);
-				}
-				*/
 			},
 			error: function(xhr, errmsg, err) {
 				Materialize.toast("Something went wrong.", 4000);
