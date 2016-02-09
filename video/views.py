@@ -5,6 +5,7 @@ from main.models import UserProfile
 from django.contrib.auth.decorators import login_required
 from quiz.models import Question, Answer, QuestionResponse
 from django.http import HttpResponseRedirect
+from random import shuffle
 
 # Create your views here.
 
@@ -78,6 +79,7 @@ def getVideoQuiz(request, vidNumber):
 		answer_query_set = Answer.objects.filter(question_ref=question)
 		for answer in answer_query_set:
 			answers_for_question.append(answer)
+		shuffle(answers_for_question)
 		questionDict[question] = [answers_for_question, hasBeenAnswered, isCorrect]
 		#questionDict[question] = answers_for_question
 	args = {
