@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from main.forms import GroupProfileForm, GroupReadOnlyForm, UpdateProfilePictureForm
-from .models import UserProfile, GroupProfile, PendingInvite, UserActivityLog
+from .models import UserProfile, GroupProfile, PendingInvite, UserActivityLog, view_page
 import json
 from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User
@@ -14,16 +14,13 @@ import re
 
 # Create your views here.
 def index(request):
+    view_page(request.user, UserActivityLog.HOME)
     return render(request, 'main/index.html', {})
 
 def profile(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+    view_page(request.user, UserActivityLog.PROFILE)
 
-    # Update that @user_profile has viewed this page
-    new_log = UserActivityLog()
-    new_log.user = request.user
-    new_log.page_viewed = UserActivityLog.PROFILE
-    new_log.save()
+    user_profile = UserProfile.objects.get(user=request.user)
 
     #send_mail("try", "message", 'mathfeud@psychstat.org', ['xwang29@nd.edu'], fail_silently=False)
     if request.method == 'POST':

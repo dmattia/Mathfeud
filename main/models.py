@@ -4,6 +4,21 @@ from django.db import models
 from PIL import Image, ImageOps
 from django.core.cache import cache
 
+def view_page(user, pageViewed):
+	""" Updates that @user has visited @pageViewed
+	    by creating a UserActivityLog object
+	Params:
+	    @user: user that viewed a page
+	    @pageViewed: page that @user viewed
+	Returns:
+	    none
+	"""
+	new_log = UserActivityLog()
+	new_log.user = user
+	new_log.page_viewed = pageViewed
+	new_log.save()
+
+
 # Create your models here.
 class GroupProfile(models.Model):
 	school = models.CharField(max_length=50)
@@ -22,12 +37,14 @@ class UserActivityLog(models.Model):
 	BLOG = 'BLOG'
 	PROFILE = 'PROF'
 	QUIZ = 'QUIZ'
+	HOME = 'HOME'
 	PAGE_VIEWED_CHOICES = (
 		(LOGGED_IN, 'Logged in'),
 		(VIDEOS, 'Videos'),
 		(BLOG, 'Blog'),
 		(PROFILE, 'Profile'),
 		(QUIZ, 'Quiz'),
+		(HOME, 'HOME'),
 	)
 	user = models.ForeignKey(User)
 	page_viewed = models.CharField(max_length=5, choices=PAGE_VIEWED_CHOICES, default=LOGGED_IN)
