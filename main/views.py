@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from main.forms import GroupProfileForm, GroupReadOnlyForm, UpdateProfilePictureForm
-from .models import UserProfile, GroupProfile, PendingInvite
+from .models import UserProfile, GroupProfile, PendingInvite, UserActivityLog
 import json
 from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User
@@ -18,6 +18,13 @@ def index(request):
 
 def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
+
+    # Update that @user_profile has viewed this page
+    new_log = UserActivityLog()
+    new_log.user = request.user
+    new_log.page_viewed = UserActivityLog.PROFILE
+    new_log.save()
+
     #send_mail("try", "message", 'mathfeud@psychstat.org', ['xwang29@nd.edu'], fail_silently=False)
     if request.method == 'POST':
         p = request.POST
@@ -117,17 +124,17 @@ def jsonView(request):
                         "name": "Fat Burn"
                     },
                     {
-                        "caloriesOut": 0,
+                        "caloriesOut": 260,
                         "max": 160,
                         "min": 132,
-                        "minutes": 0,
+                        "minutes": 20,
                         "name": "Cardio"
                     },
                     {
-                        "caloriesOut": 0,
+                        "caloriesOut": 135,
                         "max": 220,
                         "min": 160,
-                        "minutes": 0,
+                        "minutes": 5,
                         "name": "Peak"
                     }
                 ],

@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib import admin
 from django.db import models
 from PIL import Image, ImageOps
+from django.core.cache import cache
 
 # Create your models here.
 class GroupProfile(models.Model):
@@ -15,6 +16,26 @@ class GroupProfile(models.Model):
 		obj.save()
 		return obj
 
+class UserActivityLog(models.Model):
+	LOGGED_IN = 'LOGIN'
+	VIDEOS = 'VIDEO'
+	BLOG = 'BLOG'
+	PROFILE = 'PROF'
+	QUIZ = 'QUIZ'
+	PAGE_VIEWED_CHOICES = (
+		(LOGGED_IN, 'Logged in'),
+		(VIDEOS, 'Videos'),
+		(BLOG, 'Blog'),
+		(PROFILE, 'Profile'),
+		(QUIZ, 'Quiz'),
+	)
+	user = models.ForeignKey(User)
+	page_viewed = models.CharField(max_length=5, choices=PAGE_VIEWED_CHOICES, default=LOGGED_IN)
+	time = models.DateTimeField(auto_now=True)
+
+class UserActivityLogAdmin(admin.ModelAdmin):
+	readonly_fields = ('time',)
+
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, primary_key=True)
 	group = models.ForeignKey(GroupProfile)
@@ -26,6 +47,18 @@ class UserProfile(models.Model):
 			return self.picture.url.replace('/mathfeud/mathfeud','',1)
 		else:
 			return False
+	def last_seen(self):
+		return cache.get('seen_%s' % self.user.username)
+	def online(self):
+		if self.last_seen():
+			now = datetime.datetime.now()
+			if now > self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
+				return False
+			else:
+				return True
+		else:
+			return False
+
 	'''
 	def save(self):
 		if not self.picture:
@@ -56,4 +89,5 @@ class PendingInvite(models.Model):
 
 admin.site.register(GroupProfile)
 admin.site.register(UserProfile)
+admin.site.register(UserActivityLog, UserActivityLogAdmin)
 admin.site.register(PendingInvite)
