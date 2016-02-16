@@ -33,18 +33,24 @@ class GroupProfile(models.Model):
 
 class UserActivityLog(models.Model):
 	LOGGED_IN = 'LOGIN'
-	VIDEOS = 'VIDEO'
+	VIDEOS = 'VIDOS'
+	VIDEO = 'VIDEO'
+	BLOG_LIST = 'BLOGS'
 	BLOG = 'BLOG'
 	PROFILE = 'PROF'
 	QUIZ = 'QUIZ'
 	HOME = 'HOME'
+	TOPICS = 'TOPIC'
 	PAGE_VIEWED_CHOICES = (
 		(LOGGED_IN, 'Logged in'),
 		(VIDEOS, 'Videos'),
+		(VIDEO, 'Video'),
+		(BLOG_LIST, 'Blogs'),
 		(BLOG, 'Blog'),
 		(PROFILE, 'Profile'),
 		(QUIZ, 'Quiz'),
-		(HOME, 'HOME'),
+		(HOME, 'Home'),
+		(TOPICS, 'Topics'),
 	)
 	user = models.ForeignKey(User)
 	page_viewed = models.CharField(max_length=5, choices=PAGE_VIEWED_CHOICES, default=LOGGED_IN)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response
 from video.models import *
 from video.forms import VideoCommentForm
-from main.models import UserProfile
+from main.models import UserProfile, UserActivityLog, view_page
 from django.contrib.auth.decorators import login_required
 from quiz.models import Question, Answer, QuestionResponse
 from django.http import HttpResponseRedirect
@@ -11,6 +11,8 @@ from random import shuffle
 
 @login_required
 def topicList(request):
+	view_page(request.user, UserActivityLog.TOPICS)	
+
 	allTopics = Topic.objects.all().order_by('grade').order_by('order_value')
 	topicsWithVideos = []
 	for topic in allTopics:
@@ -20,6 +22,8 @@ def topicList(request):
 
 @login_required
 def getVideos(request, topicName):
+	view_page(request.user, UserActivityLog.VIDEOS)	
+
 	params = {
 		'videos': Video.objects.filter(topic=Topic.objects.get(name=topicName)),
 		'topic': topicName,
@@ -28,6 +32,8 @@ def getVideos(request, topicName):
 
 @login_required
 def getVideo(request, vidNumber):
+	view_page(request.user, UserActivityLog.VIDEO)	
+
 	video = Video.objects.get(id=vidNumber)
 
 	if request.method == 'POST':
@@ -56,6 +62,8 @@ def getVideoQuiz(request, vidNumber):
 		@questionDict: A Dictionary of Questions to sets of Answers
 		that belong to that question
 	"""
+	view_page(request.user, UserActivityLog.QUIZ)	
+
 	currentUser = UserProfile.objects.get(user=request.user)
 	video = Video.objects.get(id=vidNumber)
 	questions = Question.objects.filter(video_ref=video)

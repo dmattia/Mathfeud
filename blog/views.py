@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
-from main.models import UserProfile
+from main.models import UserProfile, UserActivityLog, view_page
 from django import forms
 from ckeditor.widgets import CKEditorWidget
 import datetime
@@ -16,6 +16,7 @@ from blog.models import *
 @login_required
 def main(request):
     """ Main listing"""
+    view_page(request.user, UserActivityLog.BLOG_LIST)	
     current_group = UserProfile.objects.get(user=request.user).group
     posts = Post.objects.all().filter(group=current_group).order_by("-created")
     paginator = Paginator(posts, 10)
@@ -35,6 +36,8 @@ def main(request):
 
 @login_required
 def post(request, pk):
+    view_page(request.user, UserActivityLog.BLOG)	
+
     post = Post.objects.get(pk=int(pk))
     d = {'post':post, 'user':request.user}
     return render(request, 'blog/post.html', d)
@@ -61,6 +64,8 @@ def add_comment(request, postID):
 @login_required
 def post(request, pk):
     """ Single post with comments and a comment form """
+    view_page(request.user, UserActivityLog.BLOG)	
+
     post = Post.objects.get(pk=int(pk))
     comments = Comment.objects.filter(post=post)
     context_dic = {'post':post, 'comments':comments, 'form':CommentForm(), 'user':request.user}
