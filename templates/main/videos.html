@@ -11,14 +11,16 @@
 <h3 class="thin">{{ topic }}</h3>
 <ul class="collection">
 	{% for video in videos %}
+	<a href="{{ video.id }}">
 	<li class="collection-item avatar">
 		<img src="http://img.youtube.com/vi/{{ video.videoID }}/0.jpg" alt="" class="circle">
-		<span class="title">{{ video.name }}</span>
-		<p>Grade: {{ video.grade }} <br>
+		<span style="color:#202020" class="title">{{ video.name }}</span>
+		<p style="color:#202020">Grade: {{ video.grade }} <br>
 		   Topic: {{ video.topic.name }}
 		</p>
 		<a href="{{ video.id }}" class="secondary-content">View Video<i class="material-icons right">navigation</i></a>
 	</li>
+	</a>
 	{% endfor %}
 </ul>
 
