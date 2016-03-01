@@ -10,6 +10,10 @@ from random import shuffle
 # Create your views here.
 
 @login_required
+def home(request):
+	return render(request, 'main/home.html')
+
+@login_required
 def topicList(request):
 	view_page(request.user, UserActivityLog.TOPICS)	
 
@@ -32,9 +36,10 @@ def getVideos(request, topicName):
 
 @login_required
 def getVideo(request, vidNumber):
-	view_page(request.user, UserActivityLog.VIDEO)	
+	view_page(request.user, UserActivityLog.VIDEO, vidNumber)	
 
 	video = Video.objects.get(id=vidNumber)
+	viewed_count = UserActivityLog.objects.filter(id_viewed=vidNumber).count()
 
 	if request.method == 'POST':
 		form = VideoCommentForm(request.POST)
@@ -52,6 +57,7 @@ def getVideo(request, vidNumber):
 		'video': video,
 		'comments': VideoComment.objects.filter(post=video),
 		'myform': form,
+		'viewCount': viewed_count,
 	}
         return render(request, 'main/video.html', args)
 
@@ -62,7 +68,7 @@ def getVideoQuiz(request, vidNumber):
 		@questionDict: A Dictionary of Questions to sets of Answers
 		that belong to that question
 	"""
-	view_page(request.user, UserActivityLog.QUIZ)	
+	view_page(request.user, UserActivityLog.QUIZ, vidNumber)	
 
 	currentUser = UserProfile.objects.get(user=request.user)
 	video = Video.objects.get(id=vidNumber)

@@ -39,8 +39,8 @@ def profile(request):
     context_dict['group'] = user_profile.group
     context_dict['form'] = form
     context_dict['is_admin'] = request.user.groups.filter(name='groupAdmin').exists()
+    context_dict['group_members'] = UserProfile.objects.filter(group=user_profile.group)
     if (context_dict['is_admin']):
-        context_dict['group_members'] = UserProfile.objects.filter(group=user_profile.group)
         context_dict['pending_invite'] = PendingInvite.objects.filter(group=user_profile.group)
     return render(request, 'main/profile.html', context_dict)
 
@@ -53,9 +53,9 @@ def create_activation_key():
 def is_valid_email(invite_email):
 	pending_invites = PendingInvite.objects.filter(email = invite_email)
 	registered_users = User.objects.filter(email = invite_email)
-	if (pending_invites.exist()):
+	if (pending_invites.exists()):
 		return False, "Invitation already sent!"
-	if (registered_users.exist()):
+	if (registered_users.exists()):
 		return False, "Email already registered!"
 
 def send_invite(request):

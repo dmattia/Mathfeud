@@ -11,6 +11,7 @@ class Question(models.Model):
     body = RichTextField()
     poster = models.ForeignKey(UserProfile, null=True)
     created = models.DateTimeField(auto_now_add=True)
+    solved = models.BooleanField(default=False)
     def __unicode__(self):
         return self.title
 
@@ -24,5 +25,18 @@ class Answer(models.Model):
     def __unicode__(self):
         return unicode("%s: %s" % (self.question.title, self.body[:60]))
 
+class Votes(models.Model):
+    """
+    @voter: user who voted
+    @answer: the specific answer being voted
+    @up: true if upvote, false if downvote
+    """
+    voter = models.ForeignKey(UserProfile, null=True)
+    answer = models.ForeignKey(Answer)
+    up = models.BooleanField()
+    def __unicode__(self):
+	return unicode("%s vote on %s" % (self.voter.user.username, self.answer.body[:60]))
+
 admin.site.register(Question)
 admin.site.register(Answer)
+admin.site.register(Votes)

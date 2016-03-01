@@ -36,7 +36,7 @@ def main(request):
 
 @login_required
 def post(request, pk):
-    view_page(request.user, UserActivityLog.BLOG)	
+    view_page(request.user, UserActivityLog.BLOG, pk)
 
     post = Post.objects.get(pk=int(pk))
     d = {'post':post, 'user':request.user}
@@ -64,7 +64,7 @@ def add_comment(request, postID):
 @login_required
 def post(request, pk):
     """ Single post with comments and a comment form """
-    view_page(request.user, UserActivityLog.BLOG)	
+    view_page(request.user, UserActivityLog.BLOG, pk)
 
     post = Post.objects.get(pk=int(pk))
     comments = Comment.objects.filter(post=post)

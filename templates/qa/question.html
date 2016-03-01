@@ -9,8 +9,7 @@
 		<div class="card-content blue-text">
 			<h3>{{ question.title }}</h3>
 			<hr>
-			<p>By: {{ question.poster.user }}<br>
-			   Posted on: {{ question.created }}
+			<p>By {{ question.poster.user }} at {{ question.created }}
 			</p>
 			<hr>
 			<div class="thick">
@@ -19,13 +18,15 @@
 		</div>
 	</div>
 	<div class="col s12 row">
-		<h4>Leave an answer:</h4>
+		<button class="btn btn-medium waves-effect z-depth-3 white blue-text thick answer_button" value="Answer">Answer</button>
+		<div class="answer" style="display: none">
 		<form class="col s12" action="{% url 'add_answer' question.pk %}" method="POST">
 			{% csrf_token %}
 			{{ form.media }}
 			{{ form.as_p }}
 			<input type="submit" class="btn btn-medium waves-effect z-depth-3 white blue-text thick" value="Comment"></input>
 		</form>
+		</div>
 	</div>
 	<div class="col s12 row">
 		{% for answer in answers %}
@@ -36,14 +37,22 @@
 				{% else %}
 				<img class="responsive-img circle" src="http://blogs.plos.org/opens/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png">
 				{% endif %}
-				<i class="small material-icons">thumb_up</i>
+				<div class="blue-text"><b>{{ answer.poster.user }}</b></div>
 			</div>
-			<div class="card-content blue-text col s11">
-				<span class="card-title">Answer by: {{ answer.poster.user }}</span>
+			<div class="card-content blue-text col s11 answer">
+			
 				<div>{{ answer.body | safe }}</div>
-				<div>Score: {{ answer.score }}</div>
-				<a href=""><i class="small material-icons">thumb_up</i></a>
-				<i class="small material-icons">thumb_down</i>
+				<div class="score">Score: <div class={{ answer.id }} style="display:inline">{{ answer.score }}</div></div>
+				<i class="small material-icons vote-up" style="cursor:pointer" value={{ answer.id }}>thumb_up</i>
+				<i class="small material-icons vote-down" style="cursor:pointer" value={{ answer.id }}>thumb_down</i>
+				{% if allowSelect %}
+					<form action="{% url 'selectBestAnswer' answer.id %}" method="POST">
+					{% csrf_token %}
+					<button class="select-answer z-depth-3 btn btn-medium white waves-effect col s4 offset-s4 thick blue-text" value={{ answer.id }}>Select as Best Answer</button>
+					</form>
+				{% elif answer.isBestAnswer %}
+					Accepted Answer!
+				{% endif %}
 			</div>
 		</div>
 		{% endfor %}

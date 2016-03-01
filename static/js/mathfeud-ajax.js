@@ -52,6 +52,61 @@ $(document).ready(function() {
 		});
 	});
 	
+	$('div.answer i.vote-up').click(function() {
+		var up = 1;
+		var answer_id = $(this).attr("value");
+		var score_div = $('div.score div.' + answer_id)
+		console.log(answer_id);
+		//score_div.html(parseInt(score_div.html()) + 1)
+		$.ajax({
+			url: "/qa/vote/",
+			type: "POST",
+			data: {'answer_id': answer_id, 'up': '1'},
+			success: function(response) {
+				console.log(response)
+				if(response['valid-response'] == 'Yes') {
+					score_div.html(response['score'])
+				} else {
+					Materialize.toast("Invalid Response", 4000);
+				}
+			},
+			error: function(xhr, errmsg, err) {
+				Materialize.toast("Something went wrong.", 4000);
+				console.log(errmsg + ": " + err);
+				console.log(xhr.status + ": " + xhr.responseText);
+			}
+		});
+
+	});
+	$('div.answer i.vote-down').click(function() {
+		var up = 1;
+		var answer_id = $(this).attr("value");
+		var score_div = $('div.score div.' + answer_id)
+		console.log(answer_id);
+		//score_div.html(parseInt(score_div.html()) + 1)
+		$.ajax({
+			url: "/qa/vote/" ,
+			type: "POST",
+			data: {'answer_id': answer_id, 'up': '0'},
+			success: function(response) {
+				console.log(response)
+				if(response['valid-response'] == 'Yes') {
+					score_div.html(response['score'])
+				} else {
+					Materialize.toast("Invalid Response", 4000);
+				}
+			},
+			error: function(xhr, errmsg, err) {
+				Materialize.toast("Something went wrong.", 4000);
+				console.log(errmsg + ": " + err);
+				console.log(xhr.status + ": " + xhr.responseText);
+			}
+		});
+
+	});
+	$("button.answer_button").click(function(){
+		$("div.answer").show()
+	});
 	var pending_invite_div = $('#invite_table');
 	var i = $('#invite_table tr').size() + 1;
 
@@ -72,7 +127,7 @@ $(document).ready(function() {
 					console.log(json);
 					console.log("success");
 								} else {
-					alert("Email send failed!");
+					alert(json['result']);
 				}
 			},
 			

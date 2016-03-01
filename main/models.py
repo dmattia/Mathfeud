@@ -4,7 +4,7 @@ from django.db import models
 from PIL import Image, ImageOps
 from django.core.cache import cache
 
-def view_page(user, pageViewed):
+def view_page(user, pageViewed, idViewed=0):
 	""" Updates that @user has visited @pageViewed
 	    by creating a UserActivityLog object
 	Params:
@@ -16,6 +16,7 @@ def view_page(user, pageViewed):
 	new_log = UserActivityLog()
 	new_log.user = user
 	new_log.page_viewed = pageViewed
+	new_log.id_viewed = idViewed
 	new_log.save()
 
 
@@ -41,6 +42,8 @@ class UserActivityLog(models.Model):
 	QUIZ = 'QUIZ'
 	HOME = 'HOME'
 	TOPICS = 'TOPIC'
+	QA = 'QA'
+	QALIST = 'QLIST'
 	PAGE_VIEWED_CHOICES = (
 		(LOGGED_IN, 'Logged in'),
 		(VIDEOS, 'Videos'),
@@ -51,10 +54,16 @@ class UserActivityLog(models.Model):
 		(QUIZ, 'Quiz'),
 		(HOME, 'Home'),
 		(TOPICS, 'Topics'),
+		(QA, 'Question Answer'),
+		(QALIST, 'Question Answer List'),
 	)
 	user = models.ForeignKey(User)
 	page_viewed = models.CharField(max_length=5, choices=PAGE_VIEWED_CHOICES, default=LOGGED_IN)
 	time = models.DateTimeField(auto_now=True)
+	id_viewed = models.IntegerField()
+
+	def __unicode__(self):
+		return "%s viewed %s" % (self.user, self.page_viewed)
 
 class UserActivityLogAdmin(admin.ModelAdmin):
 	readonly_fields = ('time',)

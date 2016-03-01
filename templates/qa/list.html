@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load qa_extras %}
 {% block body_font_color %}
 #202020;
 {% endblock %}
@@ -10,16 +11,25 @@ grey lighten-3
 
 {% block content %}
 <div class="row">
+	<div class="col s12 row" style="margin-top:20px;">
+		<a href="{% url 'newQuestion' %}" class="z-depth-3 btn btn-medium white waves-effect col s4 offset-s4 thick blue-text">New Question</a>
+	</div>
 
         <!-- Questions  -->
 	{% for question in questions.object_list %}
+	<div> {{ views|get_item:question.pk }}Views {{ votes|get_item:question.pk }} Votes
+		{% if  question.solved %}
+			solved!
+		{% else %}
+			not solved :(
+		{% endif %}
+	</div>
         <div class="col s12 card blue z-index-2">
             <div class="card-content white-text">
 		<h2><a href="{% url 'question' question.pk %}" style="color:#FFF;">{{ question.title }}</a></h2>
                     {{ question.body | safe }}
 		<p>
-                    Posted: {{ question.created }}<br>
-		    Posted by:{{ question.poster.user }}<br>
+		    Posted by <b>{{ question.poster.user }} </b> at {{ question.created }}<br>
 		</p>
 		</a>
              </div>
