@@ -15,7 +15,10 @@ import re
 # Create your views here.
 def index(request):
     view_page(request.user, UserActivityLog.HOME)
-    return render(request, 'main/index.html', {})
+    params = {
+        'videos': Videos.objects.all(),
+    }
+    return render(request, 'main/home.html', {})
 
 def profile(request):
     view_page(request.user, UserActivityLog.PROFILE)

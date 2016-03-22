@@ -13,14 +13,35 @@
 	<a href="{% url 'topics' %}" class="btn btn-large col s12 white blue-text animated fadeInUp z-depth-2 card thick">
 		Videos!
 	</a>
+	<div id="videosPreview" class="col s12 row">
+		{% for video in videos %}
+			<div class="col s12 btn white black-text">
+				{{ video.name }}
+			</div>
+		{% endfor %}
+	</div>
 
 	<a href="{% url 'blogList' %}" class="btn btn-large col s12 white blue-text animated fadeInUp z-depth-2 card thick">
 		Blogs!
 	</a>
+	<div id="blogsPreview" class="col s12 row">
+		{% for blog in blogs %}
+			<div class="col s12 btn white black-text">
+				{{ blog.title }}
+			</div>
+		{% endfor %}
+	</div>
 
 	<a href="{% url 'qa' %}" class="btn btn-large col s12 white blue-text animated fadeInUp z-depth-2 card thick">
 		Questions & Answers!
 	</a>
+	<div id="qaPreview" class="col s12 row">
+		{% for question in questions %}
+			<div class="col s12 btn white black-text">
+				{{ question }}
+			</div>
+		{% endfor %}
+	</div>
 
 	<a href="{% url 'user_profile' %}" class="btn btn-large col s12 white blue-text animated fadeInUp z-depth-2 card thick">
 		View your own profile and stuff!

@@ -26,6 +26,17 @@ $(document).ready(function() {
     	 } 
 	});
 
+	// firebase code
+	var amOnline = new Firebase('https://mathfeud.firebaseio.com/.info/connected');
+	//var userId = 0;
+ 	var userRef = new Firebase('https://mathfeud.firebaseio.com/presence/' + userId);
+	amOnline.on('value', function(snapshot) {
+		if (snapshot.val()) {
+			userRef.onDisconnect().remove();
+			userRef.set(true);
+		}
+	});
+
 	// Check an answer for correctness
 	$('.quizQuestion').submit(function(event){
 		event.preventDefault()

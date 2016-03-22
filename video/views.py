@@ -1,5 +1,7 @@
 from django.shortcuts import render, render_to_response
 from video.models import *
+from blog.models import Post
+from qa.models import Question as qaQuestion
 from video.forms import VideoCommentForm
 from main.models import UserProfile, UserActivityLog, view_page
 from django.contrib.auth.decorators import login_required
@@ -11,7 +13,13 @@ from random import shuffle
 
 @login_required
 def home(request):
-	return render(request, 'main/home.html')
+	view_page(request.user, UserActivityLog.HOME)
+	params = {
+		'videos': Video.objects.all()[:5],
+		'blogs': Post.objects.all().order_by('-created')[:5],
+		'questions': qaQuestion.objects.all()[:5]
+	}
+	return render(request, 'main/home.html', params)
 
 @login_required
 def topicList(request):

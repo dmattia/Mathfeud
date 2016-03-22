@@ -3,22 +3,30 @@ from django.contrib import admin
 from django.db import models
 from PIL import Image, ImageOps
 from django.core.cache import cache
+from django.core.mail import send_mail
 
 def view_page(user, pageViewed, idViewed=0):
 	""" Updates that @user has visited @pageViewed
-	    by creating a UserActivityLog object
+	    by creating a UserActivityLog object.
+	    Sends an email to dmattia@nd.edu if this
+	    is an important log piece
 	Params:
 	    @user: user that viewed a page
 	    @pageViewed: page that @user viewed
 	Returns:
 	    none
 	"""
+
+	send_mail('Mathfeud Update',
+		'%s viewed %s' % (user.username, pageViewed),
+		'updates@mathfeud.org',
+		['dmattia@nd.edu'],
+		fail_silently = False)
 	new_log = UserActivityLog()
 	new_log.user = user
 	new_log.page_viewed = pageViewed
 	new_log.id_viewed = idViewed
 	new_log.save()
-
 
 # Create your models here.
 class GroupProfile(models.Model):

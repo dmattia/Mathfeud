@@ -79,7 +79,7 @@ def add_question(request):
 			newQuestion = Question()
 			newQuestion.body = form.cleaned_data['body']
 			newQuestion.title = form.cleaned_data['title']
-			
+			newQuestion.poster = UserProfile.objects.get(user=request.user)
 			newQuestion.save()
 	return HttpResponseRedirect(reverse("qaList"))
 

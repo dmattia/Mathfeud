@@ -59,7 +59,6 @@
 						<td>{{ group_member.user.username }}</td>
 						<td>{{ group_member.user.email }}</td>
 						{% with group_member.user.get_profile as profile %}
-						<td>{{ profile.last_seen }}</td>
 						{% if profile.online %}
 							<td>Yes</td>
 						{% else %}
