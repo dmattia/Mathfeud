@@ -29,12 +29,45 @@ $(document).ready(function() {
 	// firebase code
 	var amOnline = new Firebase('https://mathfeud.firebaseio.com/.info/connected');
 	//var userId = 0;
- 	var userRef = new Firebase('https://mathfeud.firebaseio.com/presence/' + userId);
+ 	var currentStatus = "online";
+
+	var userListRef = new Firebase('https://mathfeud.firebaseio.com/presence/');
+
+	var myUserRef = userListRef.push();
+
 	amOnline.on('value', function(snapshot) {
 		if (snapshot.val()) {
-			userRef.onDisconnect().remove();
-			userRef.set(true);
+			myUserRef.onDisconnect().remove();
+			//userRef.set(true);
+
+			setUserStatus("online");
+		} else {
+
+			setUserStatus(currentStatus);
 		}
+	});
+
+	function setUserStatus(status) {
+		currentStatus = status;
+
+		myUserRef.set({userId: userId, status: status});
+	}
+	
+	userListRef.on("child_added", function(snapshot) {
+		var user = snapshot.val();
+		$("#"+user.userId).text(user.status);
+	});
+
+	userListRef.on("child_removed", function(snapshot) {
+		var user = snapshot.val();
+		//setUserStatus("away");
+		$("#"+user.userId).text("away");
+	});
+
+	userListRef.on("child_changed", function(snapshot){
+		console.log("An online status was modified")
+		var user = snapshot.val();
+		$("#"+user.userId).text(user.status);
 	});
 
 	// Check an answer for correctness

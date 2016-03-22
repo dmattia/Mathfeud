@@ -17,11 +17,13 @@ def view_page(user, pageViewed, idViewed=0):
 	    none
 	"""
 
+	"""
 	send_mail('Mathfeud Update',
 		'%s viewed %s' % (user.username, pageViewed),
 		'updates@mathfeud.org',
 		['dmattia@nd.edu'],
 		fail_silently = False)
+	"""
 	new_log = UserActivityLog()
 	new_log.user = user
 	new_log.page_viewed = pageViewed
