@@ -41,6 +41,11 @@ def main(request):
 
 @login_required
 def post(request, pk):
+    """
+    view for an individual post
+    pk: id of the post to be displayed
+    url: mathfeud.org/blog/pk/
+    """
     view_page(request.user, UserActivityLog.BLOG, pk)
 
     post = Post.objects.get(pk=int(pk))
@@ -48,13 +53,20 @@ def post(request, pk):
     return render(request, 'blog/post.html', d)
 
 class CommentForm(ModelForm):
+    """
+    form class used to collect user comments
+    """
     class Meta:
         model = Comment
 	fields = ['body']
 
 @login_required
 def add_comment(request, postID):
-	""" Add a new comment. """
+	""" 
+	function to add a new comment to a blog
+	postId: id of the post commented
+
+	"""
 	if request.method == 'POST':
 		form = CommentForm(request.POST)
 		if form.is_valid():

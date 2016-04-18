@@ -1,8 +1,36 @@
 from django.db import models
 from django import forms
 from django.contrib import admin
-from video.models import Video
+from video.models import Video, Topic
 from main.models import UserProfile
+import random
+
+class AutoQuestion(models.Model):
+	""" An auto generated question based on an equation
+		and a number of variables in that equation
+	"""
+	equation = models.CharField(max_length=255)
+	varCount = models.IntegerField()
+	topic = models.ForeignKey(Topic)
+	
+	def getExpression(self):
+		expression = self.equation.rpartition('=')[0]
+		return expression.strip()
+
+	def generate(self):
+		newExpr = self.getExpression()
+		for i in xrange(self.varCount-1):
+			newExpr = newExpr.replace("{" + str(i+1) + "}", str(random.randint(0,100)))
+		return newExpr
+
+	def solveExpr(self):
+		expression = self.generate()
+		solution = eval(expression)
+		return solution
+
+	def __init__(self, equation, varCount):
+		self.equation = equation
+		self.varCount = varCount
 
 class Question(models.Model):
 	"""A Question to be asked along with a particular video
@@ -53,5 +81,6 @@ class QuestionResponse(models.Model):
 	def __unicode__(self):
 		return unicode("%s response to: \"%s\"" % (self.user, self.question))
 
+admin.site.register(AutoQuestion)
 admin.site.register(Question)
 admin.site.register(Answer)
