@@ -9,6 +9,7 @@ class Video(models.Model):
         name = models.CharField(max_length=255)
 	topic = models.ForeignKey('Topic')
 	description = models.CharField(max_length=2000)
+	add_time = models.DateTimeField(auto_now=True, blank=True)
         def __unicode__(self):
                 return self.name
 	@property

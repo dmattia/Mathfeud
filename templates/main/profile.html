@@ -9,7 +9,8 @@
 			<li class="tab col s3"><a class="active" href="#profile">My profile</a></li>
 			<li class="tab col s3"><a href="#group">Group profile</a></li>
 		</ul>
-		<div id="profile" class="col row s12 card z-depth-4 white blue-text">
+		<div id="profile" >
+			<div class="col row s12 card z-depth-4 white blue-text">
 			<div class="card-image col s4">
 				{% if user_profile.picture_path %}
 				<img src="{{ user_profile.picture_path }}">
@@ -28,9 +29,57 @@
 					<input style="margin-top:15px;" class="waves-effect btn btn-medium blue white-text" type="submit" value="Submit" />
 				</form>
 			</div>
+			<div class="card-content col s8">
+				<h4 style="text-align: center;">score: {{ user_profile.score }}</h4>
+			</div>
+			</div>
+
+			<div class="col row s12 card z-depth-4 white black-text">
+			<h4 style="text-align: center;">My Questions</h4>
+				{% for q in user_questions %}
+					<div class="col s12 btn btn-large blue" style="margin-top: 10px; margin-bottom: 10px;">
+						<a class="white-text" href="/qa/{{ q.id }}">{{ q.title }} </a>
+					</div>			
+				{% endfor %}
+			</div>
+			<div class="col row s12 card z-depth-4 white black-text">
+				<h4 style="text-align: center;">My Blogs</h4>
+				{% for b in user_blogs %}
+					<div class="col s12 btn blue btn-large" style="margin-top:10px; margin-bottom: 10px;">
+						<a class="white-text" href="/blog/{{ b.id }}">{{ b.title }} </a>
+					</div>			
+				{% endfor %}
+			</div>
+			<div class="col row s12 card z-depth-4 white black-text">
+				<h4 style="text-align: center;">Recent Video Views</h4>
+				{% for v in recent_videos %}
+					<div class="col s12 btn blue btn-large" style="margin-top:10px; margin-bottom: 10px;">
+						<a class="white-text" href="/videos/{{ v.topic.name }}/{{ v.id }}">{{ v.name }} </a>
+					</div>			
+				{% endfor %}
+			</div>
+			<div class="col row s12 card z-depth-4 white black-text">
+				<h4 style="text-align: center;">Recent Question Views</h4>
+				{% for q in recent_questions %}
+					<div class="col s12 btn blue btn-large" style="margin-top:10px; margin-bottom: 10px;">
+						<a class="white-text" href="/questions/{{ q.id }}">{{ q.title }} </a>
+					</div>			
+				{% endfor %}
+
+			</div>
+			<div class="col row s12 card z-depth-4 white black-text">
+				<h4 style="text-align: center;">New Videos</h4>
+				{% for v in new_videos %}
+					<div class="col s12 btn blue" style="margin-top:10px; margin-bottom: 10px;">
+						<a class="white-text" href="/videos/{{ v.topic.name }}/{{ v.id }}">{{ v.name }} </a>
+					</div>			
+				{% endfor %}
+			</div>
+
+
 		</div>
-		<div id="group" class="col s12 card white blue-text">
-			<table>
+		<div id="group">
+			<table class="col row s12 card z-depth-4 white blue-text">
 				<thead>
 					<tr>
 						<th data-field="Name">Name</th>
@@ -44,7 +93,7 @@
 					</tr>
 				</tbody>
 			</table>
-                        <table>
+                        <table class="col row s12 card z-depth-4 white blue-text">
 				<caption>Group Members</caption>
 				<thead>
 					<tr>
@@ -58,19 +107,13 @@
 					<tr>
 						<td>{{ group_member.user.username }}</td>
 						<td>{{ group_member.user.email }}</td>
-						{% with group_member.user.get_profile as profile %}
-						{% if profile.online %}
-							<td>Yes</td>
-						{% else %}
-							<td>No</td>
-						{% endif %}
-						{% endwith %}
+						<td id={{ group_member.user.username}}>Away</td>					
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 			{% if is_admin %}
-			<table id="invite_table">
+			<table id="invite_table" class="col row s12 card z-depth-4 white blue-text">
 				<caption>Pending Invites</caption>
 				<thead>
 					<tr>
@@ -151,5 +194,5 @@
     </div>
 -->            
     
-
 {% endblock %}
+

@@ -12,10 +12,15 @@ from django.contrib.auth.decorators import login_required
 
 from blog.models import *
 # Create your views here.
-
+"""
+this file defines the views handler for blog at mathfeud
+"""
 @login_required
 def main(request):
-    """ Main listing"""
+    """ 
+    Main listing of the blog
+    url: mathfeud.org/blog/
+    """
     view_page(request.user, UserActivityLog.BLOG_LIST)	
     current_group = UserProfile.objects.get(user=request.user).group
     posts = Post.objects.all().filter(group=current_group).order_by("-created")

@@ -4,9 +4,14 @@ from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from main.forms import GroupProfileForm, GroupReadOnlyForm, UpdateProfilePictureForm
 from .models import UserProfile, GroupProfile, PendingInvite, UserActivityLog, view_page
+
 import json
 from django.utils.crypto import get_random_string
 from django.contrib.auth.models import User
+
+from qa import models as qa_models
+from blog import models as blog_models
+from video import models as video_models
 
 import hashlib
 import random
@@ -43,9 +48,61 @@ def profile(request):
     context_dict['form'] = form
     context_dict['is_admin'] = request.user.groups.filter(name='groupAdmin').exists()
     context_dict['group_members'] = UserProfile.objects.filter(group=user_profile.group)
+
+    getScore(user_profile)
+    context_dict['recent_videos'], context_dict['recent_questions'], context_dict['recent_blogs'] = getActivity(user_profile)
+
+    context_dict['new_videos'] = getUpdate()
+    context_dict['user_questions'] = qa_models.Question.objects.filter(poster=user_profile)
+    context_dict['user_blogs'] = blog_models.Post.objects.filter(poster=request.user)
     if (context_dict['is_admin']):
         context_dict['pending_invite'] = PendingInvite.objects.filter(group=user_profile.group)
     return render(request, 'main/profile.html', context_dict)
+
+def getUpdate():
+    """
+    get recent site updates
+    """
+    videos = video_models.Video.objects.order_by('-add_time')[:3]
+    return videos
+
+def getActivity(user_profile):
+    """
+    get recent viewed videos 
+    """
+    video_log = UserActivityLog.objects.filter(user=user_profile.user).filter(page_viewed=UserActivityLog.VIDEO).order_by('-time').values_list('id_viewed', flat=True).distinct()
+    question_log = UserActivityLog.objects.filter(user=user_profile.user).filter(page_viewed=UserActivityLog.QA).order_by('-time').values_list('id_viewed', flat=True).distinct()
+    blog_log = UserActivityLog.objects.filter(user=user_profile.user).filter(page_viewed=UserActivityLog.BLOG).order_by('-time')[:3]
+    if len(video_log) > 3:
+        video_log = video_log[:3]
+    if len(question_log) > 3:
+        question_log = question_log[:3]
+    videos = []
+    questions = []
+    blogs = []
+    for v in video_log:
+	try:
+            videos.append(video_models.Video.objects.get(pk=v))
+        except:
+            None
+    for q in question_log:
+        try:
+            questions.append(qa_models.Question.objects.get(pk=q))
+        except:
+           None
+
+    return videos, questions, blogs
+
+def getScore(user_profile):
+    """
+    calculate current user score, store it in database and return the score
+    """
+    num_questions = qa_models.Question.objects.filter(poster=user_profile).count()
+    num_videos_viewed = UserActivityLog.objects.filter(user=user_profile.user).filter(page_viewed=UserActivityLog.VIDEO).count()
+	
+    score = 2*num_questions + num_videos_viewed
+    user_profile.score = score
+    user_profile.save()	
 
 def create_activation_key():
     #salt = hashlib.sha1(six.text_type(random.random()).encode('ascii')).hexdigest()[:5]

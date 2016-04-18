@@ -82,6 +82,7 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User, primary_key=True)
 	group = models.ForeignKey(GroupProfile)
 	picture = models.ImageField(upload_to='/mathfeud/mathfeud/images/profile_photos/', null=True)
+	score = models.IntegerField(default=0)
 	def __unicode__(self):
 		return self.user.username
 	def picture_path(self):

@@ -18,6 +18,7 @@ from django.contrib import admin
 from main import regbackend
 from material.frontend import urls as frontend_urls
 from mathfeud import settings
+#from qa import views as qa_views
 
 urlpatterns = [
     url(r'^$', include('main.urls')),
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/profile/', include('main.urls')),
     url(r'^blog/', include('blog.urls')),
+    #url(r'^qa/$', qa_views.main, name='qaList'),
     url(r'^qa/', include('qa.urls')),
     url(r'^quiz/', include('quiz.urls')),
     url(r'^videos/', include('video.urls')),

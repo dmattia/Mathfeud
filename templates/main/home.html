@@ -16,7 +16,7 @@
 	<div id="videosPreview" class="col s12 row">
 		{% for video in videos %}
 			<div class="col s12 btn white black-text">
-				{{ video.name }}
+				<a href="/videos/{{video.topic.name}}/{{video.id}}">{{ video.name }}</a>
 			</div>
 		{% endfor %}
 	</div>
@@ -27,18 +27,18 @@
 	<div id="blogsPreview" class="col s12 row">
 		{% for blog in blogs %}
 			<div class="col s12 btn white black-text">
-				{{ blog.title }}
+				<a href="/blog/{{blog.id}}">{{ blog.title }}</a>
 			</div>
 		{% endfor %}
 	</div>
 
-	<a href="{% url 'qa' %}" class="btn btn-large col s12 white blue-text animated fadeInUp z-depth-2 card thick">
+	<a href="/qa" class="btn btn-large col s12 white blue-text animated fadeInUp z-depth-2 card thick">
 		Questions & Answers!
 	</a>
 	<div id="qaPreview" class="col s12 row">
 		{% for question in questions %}
 			<div class="col s12 btn white black-text">
-				{{ question }}
+				<a href="/qa/{{question.id}}">{{ question }}</a>
 			</div>
 		{% endfor %}
 	</div>
